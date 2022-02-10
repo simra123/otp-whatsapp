@@ -1,5 +1,3 @@
-
-
 import { useState } from 'react'
 import Uppy from '@uppy/core'
 import thumbnailGenerator from '@uppy/thumbnail-generator'
