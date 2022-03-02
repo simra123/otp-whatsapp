@@ -52,6 +52,8 @@ const Login = props => {
   const history = useHistory()
   const [email, setEmail] = useState('admin@demo.com')
   const [password, setPassword] = useState('admin')
+  // const [email, setEmail] = useState('khatri123@mail.com')
+  // const [password, setPassword] = useState('dfdfdf')
 
   const { register, errors, handleSubmit } = useForm()
   const illustration = skin === 'dark' ? 'login-v2-dark.svg' : 'login-v2.svg',
@@ -65,14 +67,41 @@ const Login = props => {
           const data = { ...res.data.userData, accessToken: res.data.accessToken, refreshToken: res.data.refreshToken }
           dispatch(handleLogin(data))
           ability.update(res.data.userData.ability)
-          history.push(getHomeRouteForLoggedInUser(data.role))
+          history.push(getHomeRouteForLoggedInUser(1))
           toast.success(
             <ToastContent name={data.fullName || data.username || 'John Doe'} role={data.role || 'admin'} />,
             { transition: Slide, hideProgressBar: true, autoClose: 2000 }
           )
+          
         })
         .catch(err => console.log(err))
     }
+
+//     Action
+//     .post("/auth/login", { email, password })
+//     .then(res => {
+//       console.log(res)
+//       // const data = { ...res.data.userData, accessToken: res.data.accessToken, refreshToken: res.data.refreshToken }
+//       if (res.data.success === true) {
+
+//         dispatch(handleLogin(res.data.data))
+//         ability.update([{action:"manage", subject:"all"}])
+//         history.push(getHomeRouteForLoggedInUser(res.data.data.usetype))
+//         toast.success(
+//           <ToastContent name={res.data.data.name} role={res.data.data.usertype === 1 ?  'admin' : "client"} />,
+
+//           { transition: Slide, hideProgressBar: true, autoClose: 2000 }
+//           )
+//         } else {
+          
+//           toast.error(
+//             <ToastContent name={res.data.data.name} role={res.data.data.usertype === 1 ?  'admin' : "client"} />,
+//             { transition: Slide, hideProgressBar: true, autoClose: 2000 }
+//             )
+//         }
+//     })
+//     .catch(err => console.log(err))
+// }    
   }
   return (
         <div className='auth-wrapper auth-v2'>

@@ -36,7 +36,7 @@ import {
 import { Smartphone } from "react-feather"
 import { FaAddressBook, FaDollarSign } from "react-icons/fa"
 import Action from "../../middleware/API"
-import baseURL from "../../middleware/BaseURL"
+
 //   hardcoded colors
 
 //   hardcoded categories

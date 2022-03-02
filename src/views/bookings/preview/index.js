@@ -13,13 +13,14 @@ import PreviewActions from './PreviewActions'
 
 // ** Styles
 import '@styles/base/pages/app-invoice.scss'
+import Action from "../../../middleware/API"
 
 const InvoicePreview = () => {
   // ** Vars
   const { id } = useParams()
 
   // ** States
-  const [data, setData] = useState(null)
+  const [data, setData] = useState([])
   const [sendSidebarOpen, setSendSidebarOpen] = useState(false)
   const [addPaymentOpen, setAddPaymentOpen] = useState(false)
 
@@ -28,13 +29,17 @@ const InvoicePreview = () => {
   const toggleAddSidebar = () => setAddPaymentOpen(!addPaymentOpen)
 
   // ** Get invoice on mount based on id
-  useEffect(() => {
-    axios.get(`/api/invoice/invoices/${id}`).then(response => {
-      setData(response.data)
-    })
+  useEffect(async () => {
+    const res = await Action.get(`/booking?_id=${id}`, {})
+    if (res.data.success === true) {
+      setData(res.data.data[0])
+    } else {
+      
+    }
+    
   }, [])
 
-  return data !== null && data.invoice !== undefined ? (
+  return data !== null && data.invoiceid !== undefined ? (
     <div className='invoice-preview-wrapper'>
       <Row className='invoice-preview'>
         <Col xl={12} md={12} sm={12}>

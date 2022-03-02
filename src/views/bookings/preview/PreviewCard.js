@@ -7,18 +7,17 @@ import {Link} from 'react-router-dom'
 import {FaMapMarkerAlt} from 'react-icons/fa'
 import Bar from '../progress-bar'
 import Select from 'react-select'
-
 const status =   [
-  { label : "pending ", value : "0%"},
-  { label : "accepted ", value : "10%"},
-  { label : "rejected ", value : "20%"},
-  { label : "assigned ", value : "30%"},
-  { label : "canceled ", value : "40%"},
-  { label : "complete ", value : "50%"}
-
+  { label : "Pending ", value : "0%"},
+  { label : "Accepted ", value : "10%"},
+  { label : "Rejected ", value : "20%"},
+  { label : "Assigned ", value : "30%"},
+  { label : "Canceled ", value : "40%"},
+  { label : "Complete ", value : "50%"}
  ]
 
-const PreviewCard = ({ data }) => {
+
+const PreviewCard = ({ data }) => {  
   return data !== null ? (
     <Card className='invoice-preview-card'>
       <CardBody className='invoice-padding pb-0'>
@@ -32,11 +31,11 @@ const PreviewCard = ({ data }) => {
             <Col md="6" className="text-right justify-ite">
             <div className='mt-md-0 mt-2'>
             <h4 className='i'>
-              Invoice <span className='invoice-number'>#{data.invoice.id}</span>
+              Invoice <span className='invoice-number'>#{data.invoiceid}</span>
             </h4>
             <div className='d-inline-flex'>
               <p className='invoice-date-title'>Date Issued:</p>
-              <p className='ml-1 font-weight-bold'>{data.invoice.issuedDate}</p>
+              <p className='ml-1 font-weight-bold'>{data.createdAt}</p>
             </div>
             {/* <div className='invoice-date-wrapper'>
               <p className='invoice-date-title'>Due Date:</p>
@@ -50,22 +49,22 @@ const PreviewCard = ({ data }) => {
             <h6 className='mb-2'>Customer Info:</h6>
             <div className='d-inline-flex mb-50'>
               <img className='mr-50 rounded-circle' src={Avatar} width='35' height='35' />
-              <h6 className=' mt-50'>John Smliga</h6>
+              <h6 className=' mt-50'>{data.userid[0].name}</h6>
             </div>
-            <CardText className='mb-25'>+44 (876) 543 2198</CardText>
-            <CardText className='mb-25'>john@gmail.com</CardText>
+            <CardText className='mb-25'>{data.userid[0].phone}</CardText>
+            <CardText className='mb-25'>{data.userid[0].email}</CardText>
             <Link to="/bookings/map">
-            <CardText className='mb-25'>San Diego County</CardText>
+            <CardText className='mb-25'>{data.userid[0].address}</CardText>
             </Link>
             </Col>
             <Col md="4">
             <h6 className='mb-2'>Employee Info:</h6>
             <div className='d-inline-flex mb-50'>
               <img className='mr-50 rounded-circle' src={Avatar2} width='35' height='35' />
-              <h6 className=' mt-50'>David Allen </h6>
+              <h6 className=' mt-50'>{data.employeeid[0].name} </h6>
             </div>
-            <CardText className='mb-25'>+44 (876) 543 2198</CardText>
-            <CardText className='mb-25'>David@gmail.com</CardText>
+            <CardText className='mb-25'>{data.employeeid[0].phone}</CardText>
+            <CardText className='mb-25'>{data.employeeid[0].phone}</CardText>
             <Link to="/bookings/map">
             <div className='d-inline-flex mb-50'>
               <FaMapMarkerAlt className='mr-25' size={20}/>
@@ -143,54 +142,28 @@ const PreviewCard = ({ data }) => {
               <p className='card-text text-nowrap'>
                 Developed a full stack native app using React Native, Bootstrap & Python
               </p> */}
-              lorem ipsum
+              {data.serviceid[0].heading}
             </td>
             <td className='py-1'>
-              <span className='font-weight-bold'>00:30</span>
+              <span className='font-weight-bold'>{data.starttime}</span>
             </td>
             <td className='py-1'>
-              <span className='font-weight-bold'>30-feb-1894</span>
+              <span className='font-weight-bold'>{data.startdate}</span>
             </td>
             <td className='py-1'>
             <div className='d-inline-flex mb-50'>
               <img className='mr-50 rounded-circle' src={Avatar2} width='35' height='35' />
-              <h6 className=' mt-50'>David Allen </h6>
+              <h6 className=' mt-50'>{data.userid[0].name} </h6>
             </div>
             </td>
             <td className='py-1'>
               <div className='d-inline-flex mb-50'>
                 <img className='mr-50 rounded-circle' src={Avatar} width='35' height='35' />
-                <h6 className=' mt-50'>John Smliga</h6>
+                <h6 className=' mt-50'>{data.employeeid[0].name}</h6>
               </div>
             </td>
           </tr>
-          <tr className='border-bottom'>
-          <td className='py-1'>
-              {/* <p className='card-text font-weight-bold mb-25'>Native App Development</p>
-              <p className='card-text text-nowrap'>
-                Developed a full stack native app using React Native, Bootstrap & Python
-              </p> */}
-              lorem ipsum
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>00:30</span>
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>30-feb-1894</span>
-            </td>
-            <td className='py-1'>
-            <div className='d-inline-flex mb-50'>
-              <img className='mr-50 rounded-circle' src={Avatar2} width='35' height='35' />
-              <h6 className=' mt-50'>David Allen </h6>
-            </div>
-            </td>
-            <td className='py-1'>
-              <div className='d-inline-flex mb-50'>
-                <img className='mr-50 rounded-circle' src={Avatar} width='35' height='35' />
-                <h6 className=' mt-50'>John Smliga</h6>
-              </div>
-            </td>
-          </tr>
+          
         </tbody>
       </Table>
       {/* /Invoice Description */}
@@ -202,14 +175,15 @@ const PreviewCard = ({ data }) => {
 
       {/* Invoice Note */}
       <CardBody className='my-5 px-5'>
-        <Bar/>
+        <Bar state= {data.status}/>
         <Row>
           <Col md='3' className='mt-5'>
             <Label>set Status</Label>
             <Select
             className='react-select'
             classNamePrefix='select'
-            defaultValue={status[0]}
+            defaultValue={status[0].label}
+            
             options={status}
             />
             </Col>
