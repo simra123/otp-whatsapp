@@ -57,7 +57,8 @@ import Action from "../../middleware/API"
 //   { value: 'sweat-shirts', label: 'Sweat Shirts' }
 // ]
 
-const ProductForm = () => {
+const ProductForm = (props) => {
+
   //  file Uploader
   const [img, setImg] = useState(null)
   //text editor
@@ -180,9 +181,11 @@ const ProductForm = () => {
     }
   }
   useEffect(async () => {
+
     fetchcategorydata()
     fetchcolor()
     fetchattribute()
+
   }, [])
 
   const paraToHtml = stateToHTML(para.getCurrentContent())
@@ -422,9 +425,9 @@ const ProductForm = () => {
             <Col sm="12" className="mt-2">
               {/* text editor */}
               <h6>Product Description</h6>
-              <Editor editorState={ para } onEditorStateChange={ data => setPara(data) } />
-              
-              
+              <Editor editorState={para} onEditorStateChange={data => setPara(data)} />
+
+
             </Col>
 
             <Col sm="12" className="mt-4">
