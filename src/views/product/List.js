@@ -46,13 +46,13 @@ const Banner = () => {
   useEffect(async () => {
     const res = await Action.get('/product', {})
     if (res.data.success === true) {
-    console.log(res.data)
-      setproducts(res?.body?.body)
+      console.log(res.data)
+      setproducts(res?.data?.data)
     } else {
       setproducts([])
     }
   }, [modal])
-  console.log(products)
+  
 
   const toggleModalDanger = async (id) => {
     if (id) {
@@ -82,7 +82,7 @@ const Banner = () => {
             </thead>
             <tbody>
               {
-                products.map((value, index) => {
+                products ? (products.map((value, index) => {
                   return (
                     <tr key={index}>
                       <td>
@@ -98,7 +98,7 @@ const Banner = () => {
                             <MoreVertical size={15} />
                           </DropdownToggle>
                           <DropdownMenu right>
-                            <Link to="/product/form" state={value}>
+                            <Link to={{pathname:"/product/form", state : {value}}} >
                               <DropdownItem href='/' >
                                 <Edit className='mr-50' size={15} />  <span className='align-middle'>Edit</span>
                               </DropdownItem>
@@ -116,7 +116,7 @@ const Banner = () => {
 
                         {/* delete modal */}
                         <Modal
-                          isOpen={modal === value.id}
+                          isOpen={modal}
                           toggle={() => toggleModalDanger(value.id)}
                           className='modal-dialog-centered'
                           modalClassName="modal-danger"
@@ -134,9 +134,9 @@ const Banner = () => {
                       </td>
                     </tr>
                   )
-                })
-              }
-
+                }
+                )
+                ) : null}
 
             </tbody>
           </Table>

@@ -36,6 +36,7 @@ import {
 import { Smartphone } from "react-feather"
 import { FaAddressBook, FaDollarSign } from "react-icons/fa"
 import Action from "../../middleware/API"
+import baseURL from "../../middleware/BaseURL"
 
 //   hardcoded colors
 
@@ -128,7 +129,6 @@ const ProductForm = (props) => {
 
   async function fetchcategorydata() {
     const response = await Action.get("/category", {})
-
     if (response.data.success === true) {
       response.data.data.map((item, index) => {
         response.data.data[index].value = item.text
@@ -181,7 +181,21 @@ const ProductForm = (props) => {
     }
   }
   useEffect(async () => {
+    if (props.location) {
 
+      const v = props.location.state.value
+      console.log(v)
+      setbody({name: v.name})
+      setbody({ minQuantity: v?.quantity })
+      setbody({ category: v.category })
+      setbody({ colors: v.color })
+      setbody({ price: v.price })
+      setbody({ quantity: v.quantity })
+      setbody({ SKU: v.SKU })
+      setbody({ attribute: Object.keys(v.size) })
+      setbody({ value: Object.values(v.size) })
+
+    }
     fetchcategorydata()
     fetchcolor()
     fetchattribute()
@@ -189,21 +203,21 @@ const ProductForm = (props) => {
   }, [])
 
   const paraToHtml = stateToHTML(para.getCurrentContent())
-  console.log(paraToHtml)
-  const data = new FormData()
-  data.append('name', body.name)
-  data.append('minQuantity', body.minQuantity)
-  data.append('file', img)
-  data.append('category', body.category)
-  data.append('color', body.color)
-  data.append('price', body.price)
-  data.append('quantity', body.quantity)
-  data.append('SKU', body.SKU)
-  data.append('comments', paraToHtml)
-
+  
+  
   const submit = async () => {
-    await console.log(await data)
-    console.log(body)
+    const data = new FormData()
+    data.append('name', body.name)
+    data.append('minQuantity', body.minQuantity)
+    data.append('file', img)
+    data.append('category', body.category)
+    data.append('color', body.color)
+    data.append('price', body.price)
+    data.append('quantity', body.quantity)
+    data.append('SKU', body.SKU)
+    data.append('comments', paraToHtml)
+    
+    
     const response = await Action.post(`/product`, data, {})
     if (response.data.success === true) {
       toast.success(
@@ -239,6 +253,7 @@ const ProductForm = (props) => {
                 </InputGroupAddon>
                 <Input
                   type="text"
+                  value={body.name}
                   id="pro-name"
                   placeholder="Enter your product Name"
                   onChange={(e) => {
@@ -263,6 +278,7 @@ const ProductForm = (props) => {
                   onChange={(e) => {
                     setbody({ ...body, minQuantity: e.target.value })
                   }}
+                  value={body.minQuantity}
                 />
               </InputGroup>
             </Col>
@@ -277,6 +293,7 @@ const ProductForm = (props) => {
                 onChange={(e) => {
                   setbody({ ...body, category: e._id })
                 }}
+                value={body.category}
                 options={category}
                 isClearable={false}
               />
@@ -301,6 +318,7 @@ const ProductForm = (props) => {
                 {img !== null ? (
                   <img
                     className="rounded mt-2"
+                    // src={body.image ? (baseURL + body.image) : img}
                     src={img}
                     alt="avatar"
                     height="100"

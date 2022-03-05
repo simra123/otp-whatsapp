@@ -18,6 +18,7 @@ const status =   [
 
 
 const PreviewCard = ({ data }) => {  
+  console.log(data)
   return data !== null ? (
     <Card className='invoice-preview-card'>
       <CardBody className='invoice-padding pb-0'>
@@ -61,10 +62,10 @@ const PreviewCard = ({ data }) => {
             <h6 className='mb-2'>Employee Info:</h6>
             <div className='d-inline-flex mb-50'>
               <img className='mr-50 rounded-circle' src={Avatar2} width='35' height='35' />
-              <h6 className=' mt-50'>{data.employeeid[0].name} </h6>
+              <h6 className=' mt-50'>{data.employeeid[0]?.name} </h6>
             </div>
-            <CardText className='mb-25'>{data.employeeid[0].phone}</CardText>
-            <CardText className='mb-25'>{data.employeeid[0].phone}</CardText>
+            <CardText className='mb-25'>{data.employeeid[0]?.phone}</CardText>
+            <CardText className='mb-25'>{data.employeeid[0]?.phone}</CardText>
             <Link to="/bookings/map">
             <div className='d-inline-flex mb-50'>
               <FaMapMarkerAlt className='mr-25' size={20}/>
@@ -159,7 +160,7 @@ const PreviewCard = ({ data }) => {
             <td className='py-1'>
               <div className='d-inline-flex mb-50'>
                 <img className='mr-50 rounded-circle' src={Avatar} width='35' height='35' />
-                <h6 className=' mt-50'>{data.employeeid[0].name}</h6>
+                <h6 className=' mt-50'>{data.employeeid[0]?.name}</h6>
               </div>
             </td>
           </tr>
