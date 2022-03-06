@@ -224,6 +224,13 @@ const AppRoutes = [
     }
   },
   {
+    path: '/employee/edit/:id',
+    component: lazy(() => import('../../views/employee/updateFrom')),
+    meta: {
+      navLink: '/employee/edit/:id'
+    }
+  },
+  {
     path: '/employee/reviews',
     component: lazy(() => import('../../views/employee/Reviews')),
     meta: {
