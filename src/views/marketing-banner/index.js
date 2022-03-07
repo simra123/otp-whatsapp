@@ -16,14 +16,7 @@ import baseURL from '../../middleware/BaseURL'
 
 import { Card, Spinner, Form, Row, CustomInput, Col, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
 
-const banner = [
-  {
-    id: 1,
-    no: 1,
-    image: 'https://images.pexels.com/photos/6974315/pexels-photo-6974315.jpeg?cs=srgb&dl=pexels-cottonbro-6974315.jpg&fm=jpg'
-  }
 
-]
 const langs = [
   {
     value: 'French',
@@ -40,8 +33,10 @@ const Banner = () => {
   const [modal, setModal] = useState(null)
   //file uploader
   const [img, setImg] = useState(null)
+  const [imgUpload, setImgUpload] = useState(null)
   const [lang, setLang] = useState('French')
-  const [preview, setPreview] = useState([])
+  const [preview, setPreview] = useState(false)
+  const [hitAPI, setHitAPI] = useState(false)
   const [id, setId] = useState('')
 
 
@@ -55,12 +50,12 @@ const Banner = () => {
 
   useEffect(() => {
     const getBanner = async () => {
-      const { data } = await Action.get(`/banner/splash?lang=${ lang }`)
-      setImg(data.data[0].image)
-      setId(data._id)
+      const { data } = await Action.get(`/banner/market?lang=${ lang }`)
+      setImg(data.data[0])
+      setId(data.data[0]._id)
     }
     getBanner()
-  })
+  }, [hitAPI])
 
 
   const uppy = new Uppy({
@@ -72,13 +67,36 @@ const Banner = () => {
   uppy.use(thumbnailGenerator)
 
   uppy.on('thumbnail:generated', (file, preview) => {
-    setImg(file.data)
+    setImgUpload(file.data)
     setPreview(preview)
   })
+
+  const newData = new FormData()
+  newData.append('file', imgUpload)
+  newData.append('lang', lang)
   //post
   const postBanner = async (e) => {
-    const res = await Action.put(`/banner/${ id }`)
-    console.log(res)
+    e.preventDefault()
+    setHitAPI(true)
+    try {
+      await Action.put(`/banner/${ id }`, newData, {})
+      setHitAPI(false)
+      setModal(null)
+      toast.success(<SuccessToast title="Success" text="settings updated Successfully!" />)
+
+    } catch (error) {
+      toast.error(<ErrorToast title="error" text={ 'something went wrong, try again later' } />)
+    }
+  }
+  const updateVisible = (boolean) => {
+    try {
+      Action.put(`/banner/${ id }`, { is_shown: boolean }, {})
+      setHitAPI(false)
+      toast.success(<SuccessToast title="Success" text="Visibility updated!!" />)
+
+    } catch (error) {
+      toast.error(<ErrorToast title="error" text={ 'something went wrong, try again later' } />)
+    }
   }
   return (
     <>
@@ -104,73 +122,65 @@ const Banner = () => {
               </tr>
             </thead>
             <tbody>
-              {
-                banner.map((value, index) => {
-                  return (
-                    <tr key={ index }>
-                      <td>
-                        { value.no }
-                      </td>
+              { img !== null ? <tr>
+                <td>  1</td> <td> <img src={ baseURL + img?.image } width="auto" height="230" alt="" /> </td>
+                <td>
+                  <CustomInput
+                    className='custom-control-info'
+                    type='switch'
+                    id={ id }
+                    name='info'
+                    inline
+                    onChange={ (e) => updateVisible(e.currentTarget.checked) }
+                    defaultChecked={ img.is_shown }
+                  />
+                </td>
+                <td>
+                  <UncontrolledDropdown>
+                    <DropdownToggle className='icon-btn hide-arrow' color='transparent' size='sm' caret>
+                      <MoreVertical size={ 15 } />
+                    </DropdownToggle>
+                    <DropdownMenu right>
+                      <DropdownItem href='/' onClick={ (e) => {
+                        e.preventDefault()
+                        toggleModalPrimary('jdITYDuwoi')
+                      } }>
+                        <Edit className='mr-50' size={ 15 } />  <span className='align-middle'>Edit</span>
+                      </DropdownItem>
+                    </DropdownMenu>
+                  </UncontrolledDropdown>
+                  <Modal
+                    isOpen={ modal === 'jdITYDuwoi' }
+                    toggle={ () => toggleModalPrimary('jdITYDuwoi') }
+                    className='modal-dialog-centered'
+                    modalClassName="modal-primary"
+                    key={ 'jdITYDuwoi' }>
+                    <ModalHeader toggle={ () => toggleModalPrimary('jdITYDuwoi') }>Edit</ModalHeader>
+                    <ModalBody>
+                      <Form>
+                        <Row>
+                          <Col sm='12' className="mt-2">
+                            {/* basic image upload */ }
 
-                      <td> <img src={ baseURL + img } width="auto" height="230" alt="" /> </td>
-                      <td>
-                        <CustomInput
-                          className='custom-control-secondary'
-                          type='switch'
-                          id={ value.id }
-                          name='secondary'
-                          inline
-                          defaultChecked
-                        />
-                      </td>
-                      <td>
-                        <UncontrolledDropdown>
-                          <DropdownToggle className='icon-btn hide-arrow' color='transparent' size='sm' caret>
-                            <MoreVertical size={ 15 } />
-                          </DropdownToggle>
-                          <DropdownMenu right>
-                            <DropdownItem href='/' onClick={ (e) => {
-                              e.preventDefault()
-                              toggleModalPrimary(value.id)
-                            } }>
-                              <Edit className='mr-50' size={ 15 } />  <span className='align-middle'>Edit</span>
-                            </DropdownItem>
-                          </DropdownMenu>
-                        </UncontrolledDropdown>
-                        <Modal
-                          isOpen={ modal === value.id }
-                          toggle={ () => toggleModalPrimary(value.id) }
-                          className='modal-dialog-centered'
-                          modalClassName="modal-primary"
-                          key={ value.id }>
-                          <ModalHeader toggle={ () => toggleModalPrimary(value.id) }>Edit</ModalHeader>
-                          <ModalBody>
-                            <Form>
-                              <Row>
-                                <Col sm='12' className="mt-2">
-                                  {/* basic image upload */ }
+                            <h6> Upload Banner </h6>
+                            <DragDrop uppy={ uppy } />
+                            { img !== null ? <img className='rounded mt-2' height={ 150 } src={ preview ? preview : baseURL + img?.image } alt='avatar' /> : null }
+                          </Col>
 
-                                  <h6> Upload Banner </h6>
-                                  <DragDrop uppy={ uppy } />
-                                  { img !== null ? <img className='rounded mt-2' src={ preview ? preview : baseURL + img } alt='avatar' /> : null }
-                                </Col>
-
-                              </Row>
-                            </Form>
-                          </ModalBody>
-                          <ModalFooter>
-
-                            <Button color="primary" onClick={ (e) => postBanner(e) }>
-                              Submit
-                              {/* spinner */ }
-                              {/* <Spinner color='light' /> */ }
-                            </Button>
-                          </ModalFooter>
-                        </Modal>
-                      </td>
-                    </tr>
-                  )
-                })
+                        </Row>
+                      </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                      <div className='d-flex'>
+                        <Button color="primary" onClick={ (e) => postBanner(e) }>
+                          Submit
+                        </Button>
+                        { hitAPI ? <Spinner color='primary' /> : null }
+                      </div>
+                    </ModalFooter>
+                  </Modal>
+                </td>
+              </tr> : null
               }
             </tbody>
           </Table>
