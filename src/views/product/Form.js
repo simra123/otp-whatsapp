@@ -116,7 +116,7 @@ const ProductForm = (props) => {
   const [para, setPara] = useState(EditorState.createEmpty())
 
   const [body, setbody] = useState({
-    name: "",
+    name: "Munib",
     minQuantity: 0,
     category: "",
     colors: [],
@@ -181,30 +181,29 @@ const ProductForm = (props) => {
     }
   }
   useEffect(async () => {
+    console.log(props.location)
     if (props.location) {
-
+      console.log("M")
+    
       const v = props.location.state.value
-      console.log(v)
-      setbody({name: v.name})
-      setbody({ minQuantity: v?.quantity })
-      setbody({ category: v.category })
-      setbody({ colors: v.color })
-      setbody({ price: v.price })
-      setbody({ quantity: v.quantity })
-      setbody({ SKU: v.SKU })
-      setbody({ attribute: Object.keys(v.size) })
-      setbody({ value: Object.values(v.size) })
-
+      setbody(...body, {name: v.name})
+      setbody(...body, { minQuantity: v?.quantity })
+      setbody(...body, { category: v.category })
+      setbody(...body, { colors: v.color })
+      setbody(...body, { price: v.price })
+      setbody(...body, { quantity: v.quantity })
+      setbody(...body, { SKU: v.SKU })
+      setbody(...body, { attribute: Object.keys(v.size) })
+      setbody(...body, { value: Object.values(v.size) })
+      console.log(body)
     }
     fetchcategorydata()
     fetchcolor()
     fetchattribute()
 
   }, [])
-
+  console.log(body)
   const paraToHtml = stateToHTML(para.getCurrentContent())
-  
-  
   const submit = async () => {
     const data = new FormData()
     data.append('name', body.name)
@@ -215,9 +214,7 @@ const ProductForm = (props) => {
     data.append('price', body.price)
     data.append('quantity', body.quantity)
     data.append('SKU', body.SKU)
-    data.append('comments', paraToHtml)
-    
-    
+    data.append('comments', paraToHtml)   
     const response = await Action.post(`/product`, data, {})
     if (response.data.success === true) {
       toast.success(
