@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Uppy from '@uppy/core'
 import thumbnailGenerator from '@uppy/thumbnail-generator'
 import { DragDrop } from '@uppy/react'
-import { EditorState } from 'draft-js'
+import { useHistory } from 'react-router-dom'
 import Action from '../../middleware/API'
 import '../../@core/scss/react/libs/editor/editor.scss'
 import '../../@core/scss/react/libs/file-uploader/file-uploader.scss'
@@ -35,6 +35,7 @@ import { SuccessToast, ErrorToast } from '../components/toastify'
 import { toast } from 'react-toastify'
 
 const EmployeeForm = () => {
+  const history = useHistory()
   const [loading, setLoading] = useState(false)
   //  file Uploader
   const [img, setImg] = useState(null)
@@ -46,7 +47,7 @@ const EmployeeForm = () => {
     gender: "",
     address: "",
     city: "",
-    usertype: 1,
+    usertype: 2,
     password: ""
   })
   console.log(Edetails)
@@ -75,16 +76,17 @@ const EmployeeForm = () => {
   //post new employee
   const postEmployee = async (e) => {
     e.preventDefault()
-    const res = await Action.post(`/auth/register/manager`, Edetails, {})
+    const res = await Action.post(`/auth/register/employee`, Edetails, {})
     console.log(res)
     if (res.data.success) {
       setLoading(true)
       setTimeout(() => {
         toast.success(<SuccessToast title="Success" text="settings updated Successfully!" />)
         setLoading(false)
+        history.push('/employee/list')
       }, 2000)
     } else {
-      setSuccess(false)
+      setLoading(false)
       toast.error(<ErrorToast title="error" text={ res.data.message } />)
     }
   }

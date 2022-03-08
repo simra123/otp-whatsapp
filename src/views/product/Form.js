@@ -99,15 +99,15 @@ const ProductForm = (props) => {
     setPreviewArr([...arr])
   })
 
-  const renderPreview = () => {
-    if (previewArr.length) {
-      return previewArr.map((src, index) => (
-        <img key={index} className="rounded mt-2 mr-1" src={src} alt="avatar" />
-      ))
-    } else {
-      return null
-    }
-  }
+  // const renderPreview = () => {
+  //   if (previewArr.length) {
+  //     return previewArr.map((src, index) => (
+  //       <img key={index} className="rounded mt-2 mr-1" src={src} alt="avatar" />
+  //     ))
+  //   } else {
+  //     return null
+  //   }
+  // }
 
   const [category, setcategory] = useState([])
   const [colors, setcolors] = useState([])
@@ -116,7 +116,7 @@ const ProductForm = (props) => {
   const [para, setPara] = useState(EditorState.createEmpty())
 
   const [body, setbody] = useState({
-    name: "Munib",
+    name: "",
     minQuantity: 0,
     category: "",
     colors: [],

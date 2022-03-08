@@ -4,6 +4,7 @@ import thumbnailGenerator from '@uppy/thumbnail-generator'
 import { DragDrop } from '@uppy/react'
 import '../../@core/scss/react/libs/file-uploader/file-uploader.scss'
 import 'uppy/dist/uppy.css'
+import Select from 'react-select'
 import { MoreVertical, Edit, Trash } from 'react-feather'
 import Action from '../../middleware/API'
 import baseURL from '../../middleware/BaseURL'
@@ -12,7 +13,7 @@ import { SuccessToast, ErrorToast } from '../components/toastify'
 //import toasts from react
 import { toast } from 'react-toastify'
 
-import { Card, Spinner, Form, Row, Col, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
+import { Card, Form, Row, Col, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
 
 
 const DesktopBanner = () => {
@@ -24,12 +25,12 @@ const DesktopBanner = () => {
   const [preview, setPreview] = useState([])
   const [preview2, setPreview2] = useState([])
 
+  const [lang, setLang] = useState('French')
 
   useEffect(() => {
     const getBanners = async () => {
-      const { data } = await Action.get(`/banner/web`)
+      const { data } = await Action.get(`/banner/web?lang=${ lang }`)
       setBanners(data.data)
-      console.log(data)
     }
     getBanners()
   })
@@ -55,6 +56,18 @@ const DesktopBanner = () => {
       setModal3(null)
     }
   }
+  const langs = [
+    {
+      value: 'French',
+      label: 'French'
+    },
+    {
+      value: 'English',
+      label: 'English'
+    }
+
+
+  ]
   //file uploader
   const [uploadImg, setUploadImg] = useState(null)
   const [editImg, setEditImg] = useState(null)
@@ -87,6 +100,7 @@ const DesktopBanner = () => {
   //post data 
   const uploadData = new FormData()
   uploadData.append('file', uploadImg)
+  uploadData.append('lang', lang)
 
   //post api 
   const postBanner = async (e) => {
@@ -134,41 +148,51 @@ const DesktopBanner = () => {
       <Card>
         <CardBody>
           <CardTitle>All Desktop Banners </CardTitle>
-          <div className="float-right mb-2">
-            <Button color="primary" onClick={ () => toggleAddNew(0) }>
-              Add new Banner
-            </Button>
-            <Modal
-              isOpen={ modal3 === 0 }
-              toggle={ () => toggleAddNew(0) }
-              className='modal-dialog-centered'
-              modalClassName="modal-primary"
-              key={ 0 }>
-              <ModalHeader toggle={ () => toggleAddNew(0) }>Upload</ModalHeader>
-              <ModalBody>
-                <Form>
-                  <Row>
-                    <Col sm='12' className="mt-2">
-                      {/* basic image upload */ }
-
-                      <h6> Upload Banners </h6>
-                      <DragDrop uppy={ uppy } />
-                      { uploadImg !== null ? <img className='rounded mt-2' src={ preview2 } alt='avatar' /> : null }
-                    </Col>
-
-                  </Row>
-                </Form>
-              </ModalBody>
-              <ModalFooter>
-
-                <Button color="primary" onClick={ (e) => postBanner(e) }>
-                  Submit
-                  {/* spinner */ }
-                  {/* <Spinner color='light' /> */ }
-                </Button>
-              </ModalFooter>
-            </Modal>
+          <div className='d-flex'>
+            <Select
+              className='react-select w-25'
+              defaultValue={ lang }
+              options={ langs }
+              style={ { width: "150px" } }
+              onChange={ (e) => setLang(e.value) }
+            />
+            <div className="ml-auto mb-2">
+              <Button color="primary" onClick={ () => toggleAddNew(0) }>
+                Add new Banner
+              </Button>
+            </div>
           </div>
+          <Modal
+            isOpen={ modal3 === 0 }
+            toggle={ () => toggleAddNew(0) }
+            className='modal-dialog-centered'
+            modalClassName="modal-primary"
+            key={ 0 }>
+            <ModalHeader toggle={ () => toggleAddNew(0) }>Upload</ModalHeader>
+            <ModalBody>
+              <Form>
+                <Row>
+                  <Col sm='12' className="mt-2">
+                    {/* basic image upload */ }
+
+                    <h6> Upload Banners </h6>
+                    <DragDrop uppy={ uppy } />
+                    { uploadImg !== null ? <img className='rounded mt-2' src={ preview2 } alt='avatar' /> : null }
+                  </Col>
+
+                </Row>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+
+              <Button color="primary" onClick={ (e) => postBanner(e) }>
+                Submit
+                {/* spinner */ }
+                {/* <Spinner color='light' /> */ }
+              </Button>
+            </ModalFooter>
+          </Modal>
+
           <Table responsive>
             <thead>
               <tr>

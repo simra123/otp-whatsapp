@@ -1,0 +1,17 @@
+.assign-employee  select:hover{
+    background-color: black !important;
+}
+.select__menu{
+    background-color: white !important;
+   position: absolute !important;
+   z-index: 20 !important;
+}
+.invoice-preview-card .table-responsive {
+    overflow-x: visible !important;
+}
+
+@media (max-width : 767px){
+    .invoice-preview-card .table-responsive {
+        overflow-x: scroll !important;
+    }
+}

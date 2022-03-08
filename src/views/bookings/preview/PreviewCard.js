@@ -1,35 +1,39 @@
 // ** Third Party Components
-import { Card, CardBody, CardText, Row, Col, Table, Label, Button } from 'reactstrap'
+import { useState, useEffect } from 'react'
+import { Card, CardBody, CardText, Row, Col, Table, Label, Button, FormGroup, Input } from 'reactstrap'
 import Logo from '@src/assets/images/logo/logo2.png'
 import Avatar from '@src/assets/images/portrait/small/avatar-s-11.jpg'
 import Avatar2 from '@src/assets/images/portrait/small/avatar-s-8.jpg'
-import {Link} from 'react-router-dom'
-import {FaMapMarkerAlt} from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 import Bar from '../progress-bar'
 import Select from 'react-select'
-const status =   [
-  { label : "Pending ", value : "0%"},
-  { label : "Accepted ", value : "10%"},
-  { label : "Rejected ", value : "20%"},
-  { label : "Assigned ", value : "30%"},
-  { label : "Canceled ", value : "40%"},
-  { label : "Complete ", value : "50%"}
- ]
+import '../booking.css'
+import Action from '../../../middleware/API'
+const status = [
+  { label: "Pending ", value: "0%" },
+  { label: "Accepted ", value: "10%" },
+  { label: "Rejected ", value: "20%" },
+  { label: "Assigned ", value: "30%" },
+  { label: "Canceled ", value: "40%" },
+  { label: "Complete ", value: "50%" }
+]
 
 
-const PreviewCard = ({ data }) => {  
-  console.log(data)
+const PreviewCard = ({ data }) => {
+  
+  
   return data !== null ? (
     <Card className='invoice-preview-card'>
       <CardBody className='invoice-padding pb-0'>
-        {/* Header */}
-          <Row>
-            <Col md="6">
+        {/* Header */ }
+        <Row>
+          <Col md="6">
             <div className='logo-wrapper'>
-              <img src={Logo} width="170"/>
+              <img src={ Logo } width="170" />
             </div>
-            </Col>
-            <Col md="6" className="text-right justify-ite">
+          </Col>
+          <Col md="6" className="text-right justify-ite">
             <div className='mt-md-0 mt-2'>
             <h4 className='i'>
               Invoice <span className='invoice-number'>#{data.invoiceid}</span>
@@ -42,46 +46,46 @@ const PreviewCard = ({ data }) => {
               <p className='invoice-date-title'>Due Date:</p>
               <p className='invoice-date'>{data.invoice.dueDate}</p>
             </div> */}
-          </div>
-            </Col>
-          </Row>
-          <Row  className="mb-2">
-            <Col md="8">
+            </div>
+          </Col>
+        </Row>
+        <Row className="mb-2">
+          <Col md="8">
             <h6 className='mb-2'>Customer Info:</h6>
             <div className='d-inline-flex mb-50'>
-              <img className='mr-50 rounded-circle' src={Avatar} width='35' height='35' />
-              <h6 className=' mt-50'>{data.userid[0].name}</h6>
+              <img className='mr-50 rounded-circle' src={ Avatar } width='35' height='35' />
+              <h6 className=' mt-50'>{ data.userid[0].name }</h6>
             </div>
-            <CardText className='mb-25'>{data.userid[0].phone}</CardText>
-            <CardText className='mb-25'>{data.userid[0].email}</CardText>
+            <CardText className='mb-25'>{ data.userid[0].phone }</CardText>
+            <CardText className='mb-25'>{ data.userid[0].email }</CardText>
             <Link to="/bookings/map">
-            <CardText className='mb-25'>{data.userid[0].address}</CardText>
+              <CardText className='mb-25'>{ data.userid[0].address }</CardText>
             </Link>
-            </Col>
-            <Col md="4">
+          </Col>
+          <Col md="4">
             <h6 className='mb-2'>Employee Info:</h6>
             <div className='d-inline-flex mb-50'>
-              <img className='mr-50 rounded-circle' src={Avatar2} width='35' height='35' />
-              <h6 className=' mt-50'>{data.employeeid[0]?.name} </h6>
+              <img className='mr-50 rounded-circle' src={ Avatar2 } width='35' height='35' />
+              <h6 className=' mt-50'>{ data.employeeid[0]?.name } </h6>
             </div>
-            <CardText className='mb-25'>{data.employeeid[0]?.phone}</CardText>
-            <CardText className='mb-25'>{data.employeeid[0]?.phone}</CardText>
+            <CardText className='mb-25'>{ data.employeeid[0]?.phone }</CardText>
+            <CardText className='mb-25'>{ data.employeeid[0]?.phone }</CardText>
             <Link to="/bookings/map">
-            <div className='d-inline-flex mb-50'>
-              <FaMapMarkerAlt className='mr-25' size={20}/>
-            <CardText className='mb-25'>Track Empployee</CardText>
-            </div>
+              <div className='d-inline-flex mb-50'>
+                <FaMapMarkerAlt className='mr-25' size={ 20 } />
+                <CardText className='mb-25'>Track Empployee</CardText>
+              </div>
             </Link>
-            {/* <CardText className='mb-25'>{data.invoice.client.contact}</CardText> */}
-            </Col>
-            </Row>
+            {/* <CardText className='mb-25'>{data.invoice.client.contact}</CardText> */ }
+          </Col>
+        </Row>
 
-        {/* /Header */}
+        {/* /Header */ }
       </CardBody>
 
-      {/* <hr className='invoice-spacing' /> */}
+      {/* <hr className='invoice-spacing' /> */ }
 
-      {/* Address and Contact */}
+      {/* Address and Contact */ }
       {/* <CardBody className='invoice-padding pt-0'>
         <Row className='invoice-spacing'>
           <Col className='p-0' lg='8'>
@@ -123,9 +127,9 @@ const PreviewCard = ({ data }) => {
           </Col>
         </Row>
       </CardBody> */}
-      {/* /Address and Contact */}
+      {/* /Address and Contact */ }
 
-      {/* Invoice Description */}
+      {/* Invoice Description */ }
       <Table responsive>
         <thead>
           <tr>
@@ -163,18 +167,27 @@ const PreviewCard = ({ data }) => {
                 <h6 className=' mt-50'>{data.employeeid[0]?.name}</h6>
               </div>
             </td>
+            <td className='py-1'>
+
+              <Select
+                className='react-select o'
+                classNamePrefix='select'
+                defaultValue={ employeeSelect[0].label }
+
+                options={ employees }
+              />
+            </td>
           </tr>
-          
         </tbody>
       </Table>
-      {/* /Invoice Description */}
+      {/* /Invoice Description */ }
 
-      {/* Total & Sales Person */}
-      
-      {/* /Total & Sales Person */}
+      {/* Total & Sales Person */ }
+
+      {/* /Total & Sales Person */ }
 
 
-      {/* Invoice Note */}
+      {/* Invoice Note */ }
       <CardBody className='my-5 px-5'>
         <Bar state= {data.status}/>
         <Row>
@@ -187,15 +200,15 @@ const PreviewCard = ({ data }) => {
             
             options={status}
             />
-            </Col>
-            <Col md='3' className='mt-0 mt-md-5'>
-            <Button.Ripple className='mt-2' color='primary' type='submit' onClick={e => e.preventDefault()}>
-             Update
+          </Col>
+          <Col md='3' className='mt-0 mt-md-5'>
+            <Button.Ripple className='mt-2' color='primary' type='submit' onClick={ e => e.preventDefault() }>
+              Update
             </Button.Ripple>
           </Col>
         </Row>
       </CardBody>
-      {/* /Invoice Note */}
+      {/* /Invoice Note */ }
     </Card>
   ) : null
 }

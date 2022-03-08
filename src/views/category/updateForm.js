@@ -29,10 +29,12 @@ import {
 } from 'reactstrap'
 import { FaPencilAlt, FaTextHeight } from 'react-icons/fa'
 import Action from '../../middleware/API'
+import BaseURL from '../../middleware/BaseURL'
 const CategoryForm = () => {
   //  file Uploader
   const [img, setImg] = useState(null)
   const [success, setSuccess] = useState(false)
+  const [preview, setPreview] = useState(null)
   //getting id from url
   const _id = new URLSearchParams(useLocation().search).get('_id')
 
@@ -75,6 +77,7 @@ const CategoryForm = () => {
 
   uppy.on('thumbnail:generated', (file, preview) => {
     setImg(file.data)
+    setPreview(preview)
   })
   const onChangeEvent = (e) => {
     const { name, value } = e.target
@@ -159,8 +162,8 @@ const CategoryForm = () => {
               {/* basic image upload */ }
 
               <h6> Category Image </h6>
-              <DragDrop uppy={ uppy } onChange={ (e) => console.log('kjdheuidh') } />
-              { img !== null ? <img className='rounded mt-2' src={ img } alt='avatar' /> : null }
+              <DragDrop uppy={ uppy } />
+              { img !== null ? <img className='rounded mt-2' src={ preview ? preview : BaseURL + img } alt='avatar' /> : null }
             </Col>
 
             <Col sm='12' className="mt-4">

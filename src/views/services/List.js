@@ -70,7 +70,7 @@ const ServiceTable = () => {
                     <td>{ index + 1 }</td>
                     <td>{ value.heading }</td>
                     <td>
-                      <img src={ baseURL + value.image } class="rounded-circle" height="50" width="50" alt="" />
+                      <img src={ baseURL + value.image } height="50" width="50" alt="" />
                     </td>
                     <td>
                       <UncontrolledDropdown>

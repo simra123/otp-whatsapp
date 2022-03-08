@@ -40,7 +40,7 @@ const PreviewCard = ({ data }) => {
           </Col>
           <Col md="4">
             <h6 className='mb-2'>Invoice To:</h6>
-            <h6 className='mb-25'> data.invoice.client.name </h6>
+            <h6 className='mb-25'> {data[0].name} </h6>
             <CardText className='mb-25'> data.invoice.client.company </CardText>
             <CardText className='mb-25'> data.invoice.client.address </CardText>
             <CardText className='mb-25'> data.invoice.client.contact </CardText>
@@ -155,11 +155,6 @@ const PreviewCard = ({ data }) => {
       {/* Total & Sales Person */ }
       <CardBody className='invoice-padding pb-2'>
         <Row className='invoice-sales-total-wrapper'>
-          {/* <Col className='mt-md-0 mt-3' md='6' order={{ md: 1, lg: 2 }}>
-            <CardText className='mb-0'>
-              <span className='font-weight-bold'>Salesperson:</span> <span className='ml-75'>Alfie Solomons</span>
-            </CardText>
-          </Col> */}
           <Col className='d-flex justify-content-end' md='12' order={ { md: 2, lg: 1 } }>
             <div className='invoice-total-wrapper'>
               <div className='invoice-total-item'>

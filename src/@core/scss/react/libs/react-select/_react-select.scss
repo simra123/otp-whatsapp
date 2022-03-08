@@ -157,5 +157,7 @@
   }
   .select__menu {
     background-color: $theme-dark-card-bg;
+    position: absolute !important;
+    display: none !important;
   }
 }

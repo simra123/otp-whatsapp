@@ -20,7 +20,6 @@
     "availity-reactstrap-validation-safe": "2.6.1",
     "axios": "0.21.1",
     "axios-mock-adapter": "1.19.0",
-    "babel-plugin-react-intl": "5.1.18",
     "bootstrap": "4.5.2",
     "bs-stepper": "1.7.0",
     "chart.js": "2.9.4",

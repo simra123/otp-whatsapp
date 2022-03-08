@@ -40,6 +40,7 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
     const GetProducts = async () => {
       try {
         const { data } = await Action.get('/product')
+        setAllProducts(data.data)
         console.log(data.data)
       } catch (error) {
         console.log(error)
@@ -53,7 +54,6 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
       <CardBody>
         <div className='invoice-list-table-header w-100 p-1'>
           <Row>
-
             <Col
               lg='6'
               className='actions-right d-flex flex-lg-nowrap mb-2 flex-wrap mt-lg-0 mt-1 pr-lg-1 p-0'>
@@ -84,7 +84,8 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
             <tbody>
               {
                 allOrders.map((data, i) => {
-                  console.log(Action.get("/product?_id=${id}", {})[0])
+                  return (
+                  allProducts.map((value) => {
                   return (
 
                     <tr className='p-3'>
@@ -100,17 +101,16 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
                           </div>
                         </div>
                       </td>
-
-                      <td>{ data.product }</td>
-                      <td> { data.quantity } </td>
-                      <td>$555</td>
+                      <td>{ value.name }</td>
+                      <td> {value.quantity} </td>
+                      <td>{value.price}</td>
                       <td>
                         <div className='column-action d-flex align-items-center'>
                           <AiOutlineCloudDownload size={ 19 } id={ `send-tooltip-5036` } />
                           <UncontrolledTooltip placement='top' target={ `send-tooltip-5036` }>
                             Download
                           </UncontrolledTooltip>
-                          <Link to={ `/orders/preview/5036` } className="text-dark" id={ `pw-tooltip-5036` }>
+                          <Link to={ {pathname :"/orders/preview/${data._id}", state : {order : [data]} } }className="text-dark" id={ `pw-tooltip-5036` }>
                             <Eye size={ 19 } className='mx-1' />
                           </Link>
                           <UncontrolledTooltip placement='top' target={ `pw-tooltip-5036` }>
@@ -120,10 +120,11 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
                           <UncontrolledTooltip placement='top' target="row-id">
                             Delete
                           </UncontrolledTooltip>
-
                         </div>
                       </td>
                     </tr>
+                  )
+                })
                   )
                 })
               }

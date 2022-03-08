@@ -31,13 +31,11 @@ const InvoicePreview = () => {
   // ** Get invoice on mount based on id
   useEffect(() => {
     const getSingleOrder = async () => {
-      const { data } = await Action.get(`/order?_id=${ id }`)
-      setData(data.data[0])
-      console.log(data.data[0])
-
+      const { data } = await Action.get(`/order?id=${ id }`)
+      setData(data.data)
+      console.log(data.data)
     }
     getSingleOrder()
-
   }, [])
 
 
