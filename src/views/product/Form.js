@@ -33,7 +33,6 @@ import {
   InputGroupAddon,
   Spinner
 } from "reactstrap"
-import { Smartphone } from "react-feather"
 import { FaAddressBook, FaDollarSign } from "react-icons/fa"
 import Action from "../../middleware/API"
 import baseURL from "../../middleware/BaseURL"
@@ -168,7 +167,7 @@ const ProductForm = (props) => {
     }
   }
   const fetchvalues = async (id) => {
-    const response = await Action.get(`/attribute/value?id=${id}`, {})
+    const response = await Action.get(`/attribute/value?id=${ id }`, {})
 
     if (response.data.success === true) {
       response.data.data.map((item, index) => {
@@ -183,10 +182,9 @@ const ProductForm = (props) => {
   useEffect(async () => {
     console.log(props.location)
     if (props.location) {
-      console.log("M")
-    
+
       const v = props.location.state.value
-      setbody(...body, {name: v.name})
+      setbody(...body, { name: v.name })
       setbody(...body, { minQuantity: v?.quantity })
       setbody(...body, { category: v.category })
       setbody(...body, { colors: v.color })
@@ -214,7 +212,7 @@ const ProductForm = (props) => {
     data.append('price', body.price)
     data.append('quantity', body.quantity)
     data.append('SKU', body.SKU)
-    data.append('comments', paraToHtml)   
+    data.append('comments', paraToHtml)
     const response = await Action.post(`/product`, data, {})
     if (response.data.success === true) {
       toast.success(
@@ -240,42 +238,42 @@ const ProductForm = (props) => {
         <Form>
           <Row>
             <Col sm="12" md="6">
-              {/*product form */}
+              {/*product form */ }
               <Label for="pro-name">Product Name</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <MdOutlineProductionQuantityLimits size={15} />
+                    <MdOutlineProductionQuantityLimits size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="text"
-                  value={body.name}
+                  value={ body.name }
                   id="pro-name"
                   placeholder="Enter your product Name"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, name: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" md="6">
-              {/*product form */}
+              {/*product form */ }
               <Label for="quantity">Minimum Purchase Quatity</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <AiOutlineNumber size={15} />
+                    <AiOutlineNumber size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="number"
                   id="quantity"
                   placeholder="Enter your quantity"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, minQuantity: e.target.value })
-                  }}
-                  value={body.minQuantity}
+                  } }
+                  value={ body.minQuantity }
                 />
               </InputGroup>
             </Col>
@@ -283,16 +281,16 @@ const ProductForm = (props) => {
             <Col className="mb-1" md="6" sm="12">
               <Label>Categories</Label>
               <Select
-                theme={selectThemeColors}
+                theme={ selectThemeColors }
                 className="react-select"
                 classNamePrefix="select"
-                defaultValue={category}
-                onChange={(e) => {
+                defaultValue={ category }
+                onChange={ (e) => {
                   setbody({ ...body, category: e._id })
-                }}
-                value={body.category}
-                options={category}
-                isClearable={false}
+                } }
+                value={ body.category }
+                options={ category }
+                isClearable={ false }
               />
             </Col>
           </Row>
@@ -301,7 +299,7 @@ const ProductForm = (props) => {
 
           <Row className="mb-2">
             <Col sm="12">
-              {/* basic image upload */}
+              {/* basic image upload */ }
 
               <h6>Thumbnail Image (300x300)</h6>
               <small>
@@ -311,21 +309,21 @@ const ProductForm = (props) => {
                 responsive.
               </small>
               <div className="mt-2">
-                <DragDrop uppy={uppy} />
-                {img !== null ? (
+                <DragDrop uppy={ uppy } />
+                { img !== null ? (
                   <img
                     className="rounded mt-2"
                     // src={body.image ? (baseURL + body.image) : img}
-                    src={img}
+                    src={ img }
                     alt="avatar"
                     height="100"
                     width="100"
                   />
-                ) : null}
+                ) : null }
               </div>
             </Col>
             <Col sm="12" className="mt-4">
-              {/* basic image upload */}
+              {/* basic image upload */ }
 
               <h6>Gallery Images (600x600)</h6>
               <small className="pb-2">
@@ -342,15 +340,15 @@ const ProductForm = (props) => {
             <Col className="mb-1" md="12" sm="12">
               <Label>Colors</Label>
               <Select
-                theme={selectThemeColors}
+                theme={ selectThemeColors }
                 className="react-select"
                 classNamePrefix="select"
-                defaultValue={colors[0]}
-                options={colors}
-                onChange={(e) => {
+                defaultValue={ colors[0] }
+                options={ colors }
+                onChange={ (e) => {
                   setbody({ ...body, color: e._id })
-                }}
-                isClearable={false}
+                } }
+                isClearable={ false }
               />
             </Col>
           </Row>
@@ -359,88 +357,88 @@ const ProductForm = (props) => {
             <Col className="mb-1" md="6" sm="12">
               <Label>Attribute Name</Label>
               <Select
-                theme={selectThemeColors}
+                theme={ selectThemeColors }
                 className="react-select"
                 classNamePrefix="select"
-                defaultValue={attribute[0]}
-                options={attribute}
-                onChange={(e) => {
+                defaultValue={ attribute[0] }
+                options={ attribute }
+                onChange={ (e) => {
                   setbody({ ...body, attribute: e.attribute })
                   fetchvalues(e._id)
-                }}
-                isClearable={false}
+                } }
+                isClearable={ false }
               />
             </Col>
             <Col className="mb-1" md="6" sm="12">
               <Label>Attribute Value</Label>
               <Select
-                theme={selectThemeColors}
+                theme={ selectThemeColors }
                 className="react-select"
                 classNamePrefix="select"
-                defaultValue={values[0]}
-                options={values}
-                onChange={(e) => {
+                defaultValue={ values[0] }
+                options={ values }
+                onChange={ (e) => {
                   setbody({ ...body, value: e.value })
-                }}
-                isClearable={false}
+                } }
+                isClearable={ false }
               />
             </Col>
             <Col sm="12" md="6">
-              {/*att form */}
+              {/*att form */ }
               <Label for="Unitprice">Unit price</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <FaDollarSign size={15} />
+                    <FaDollarSign size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="number"
                   id="UnitPrice"
                   placeholder="Unit Price"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, price: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" md="6">
-              {/*att form */}
+              {/*att form */ }
               <Label for="quantity">Quatity</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <AiOutlineNumber size={15} />
+                    <AiOutlineNumber size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="number"
                   id="quantity"
                   placeholder="Enter your quantity"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, quantity: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" md="6">
-              {/*product form */}
+              {/*product form */ }
               <Label for="sku">SKU</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <Input
                   type="text"
                   id="sku"
                   placeholder="Enter your SKU"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, SKU: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" className="mt-2">
-              {/* text editor */}
+              {/* text editor */ }
               <h6>Product Description</h6>
-              <Editor editorState={para} onEditorStateChange={data => setPara(data)} />
+              <Editor editorState={ para } onEditorStateChange={ data => setPara(data) } />
 
 
             </Col>
@@ -451,14 +449,14 @@ const ProductForm = (props) => {
                   className="mr-1"
                   color="primary"
                   type="submit"
-                  onClick={(e) => {
+                  onClick={ (e) => {
                     e.preventDefault()
                     submit()
-                  }}
+                  } }
                 >
                   Submit
-                  {/* spinner */}
-                  {/* <Spinner color='light' /> */}
+                  {/* spinner */ }
+                  {/* <Spinner color='light' /> */ }
                 </Button.Ripple>
               </FormGroup>
             </Col>

@@ -315,7 +315,7 @@ const AppRoutes = [
     }
   },
   {
-    path: '/edit-page',
+    path: '/edit-page/:url',
     component: lazy(() => import('../../views/page/Edit')),
     meta: {
       navLink: '/edit-page'

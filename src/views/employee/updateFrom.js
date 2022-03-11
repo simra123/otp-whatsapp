@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Uppy from '@uppy/core'
 import thumbnailGenerator from '@uppy/thumbnail-generator'
 import { DragDrop } from '@uppy/react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Action from '../../middleware/API'
 import '../../@core/scss/react/libs/editor/editor.scss'
 import '../../@core/scss/react/libs/file-uploader/file-uploader.scss'
@@ -37,6 +37,7 @@ import { toast } from 'react-toastify'
 const EmployeeForm = () => {
     const history = useHistory()
     const [loading, setLoading] = useState(false)
+    const { id } = useParams()
     //  file Uploader
     const [img, setImg] = useState(null)
     const [preview, setPreview] = useState(null)
@@ -50,8 +51,24 @@ const EmployeeForm = () => {
         usertype: 2,
         password: ""
     })
-    console.log(Edetails)
-
+    useEffect(() => {
+        const getAllEmployee = async () => {
+            const { data } = await Action.get(`/auth/employees?_id=${ id }`)
+            const res = data.data
+            setEdetails({
+                name: res.name,
+                email: res.email,
+                phone: res.phone,
+                gender: res.gender,
+                address: res.address,
+                city: res.city,
+                usertype: 2,
+                password: res.password
+            })
+        }
+        getAllEmployee()
+    }, [])
+    console.log(id)
     const uppy = new Uppy({
         meta: { type: 'avatar' },
         restrictions: { maxNumberOfFiles: 1 },
@@ -74,15 +91,14 @@ const EmployeeForm = () => {
         })
     }
     //post new employee
-    const postEmployee = async (e) => {
+    const updateEmployee = async (e) => {
         e.preventDefault()
-        const res = await Action.post(`/auth/register/employee`, Edetails, {})
+        setLoading(true)
+        const res = await Action.put(`/auth/employees/${ id }`, Edetails, {})
         console.log(res)
         if (res.data.success) {
-            setLoading(true)
             setTimeout(() => {
                 toast.success(<SuccessToast title="Success" text="settings updated Successfully!" />)
-                setLoading(false)
                 history.push('/employee/list')
             }, 2000)
         } else {
@@ -212,7 +228,7 @@ const EmployeeForm = () => {
 
                         <Col sm='12' className="mt-4">
                             <FormGroup className='d-flex mb-0'>
-                                <Button.Ripple className='mr-1' color='primary' type='submit' onClick={ e => postEmployee(e) }>
+                                <Button.Ripple className='mr-1' color='primary' type='submit' onClick={ e => updateEmployee(e) }>
                                     Submit
 
                                 </Button.Ripple>

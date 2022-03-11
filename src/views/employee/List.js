@@ -1,20 +1,21 @@
 import { useState, useEffect } from 'react'
 
 import { Card, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
-import avatar1 from '@src/assets/images/portrait/small/avatar-s-5.jpg'
 import { Link } from 'react-router-dom'
 import { MoreVertical, Edit, Trash } from 'react-feather'
 import Action from '../../middleware/API'
 import baseURL from '../../middleware/BaseURL'
+//import toast types from components
+import { SuccessToast, ErrorToast } from '../components/toastify'
+//import toasts from react
+import { toast } from 'react-toastify'
 
 // table data
-
-
 const EmployeeTable = () => {
   const [allEmployee, setAllEmployee] = useState([])
   useEffect(() => {
     const getAllEmployee = async () => {
-      const { data } = await Action.get('/auth/employees')
+      const { data } = await Action.get('/auth/employee')
       console.log(data.data)
       setAllEmployee(data.data)
     }
@@ -27,6 +28,19 @@ const EmployeeTable = () => {
       setModal(id)
     } else {
       setModal(null)
+    }
+  }
+  //delete employee
+  const deleteEmployee = async (id) => {
+    const res = await Action.delete(`/auth/employee?_id=${ id }`)
+    console.log(res)
+    if (res.data.success) {
+      setTimeout(() => {
+        toast.success(<SuccessToast title="Success" text="settings updated Successfully!" />)
+        history.push('/employee/list')
+      }, 2000)
+    } else {
+      toast.error(<ErrorToast title="error" text={ res.data.message } />)
     }
   }
   return (
@@ -79,17 +93,17 @@ const EmployeeTable = () => {
                         </DropdownMenu>
                       </UncontrolledDropdown>
                       <Modal
-                        isOpen={ modal === value.id }
-                        toggle={ () => toggleModal(value.id) }
+                        isOpen={ modal === value._id }
+                        toggle={ () => toggleModal(value._id) }
                         className='modal-dialog-centered'
                         modalClassName="modal-danger"
                         key={ value.id }>
-                        <ModalHeader toggle={ () => toggleModal(value.id) }>Delete</ModalHeader>
+                        <ModalHeader toggle={ () => toggleModal(value._id) }>Delete</ModalHeader>
                         <ModalBody>
                           Are you sure you want to delete this?
                         </ModalBody>
                         <ModalFooter>
-                          <Button color="danger" onClick={ () => toggleModal(value.id) }>
+                          <Button color="danger" onClick={ () => deleteEmployee(value._id) }>
                             delete
                           </Button>
                         </ModalFooter>
