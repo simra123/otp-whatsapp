@@ -183,24 +183,24 @@ const ProductForm = (props) => {
     console.log(props.location)
     if (props.location) {
 
-      const v = props.location.state.value
-      setbody(...body, { name: v.name })
-      setbody(...body, { minQuantity: v?.quantity })
-      setbody(...body, { category: v.category })
-      setbody(...body, { colors: v.color })
-      setbody(...body, { price: v.price })
-      setbody(...body, { quantity: v.quantity })
-      setbody(...body, { SKU: v.SKU })
-      setbody(...body, { attribute: Object.keys(v.size) })
-      setbody(...body, { value: Object.values(v.size) })
-      console.log(body)
+      // const v = props.location.state.value
+      // setbody(...body, { name: v.name })
+      // setbody(...body, { minQuantity: v?.quantity })
+      // setbody(...body, { category: v.category })
+      // setbody(...body, { colors: v.color })
+      // setbody(...body, { price: v.price })
+      // setbody(...body, { quantity: v.quantity })
+      // setbody(...body, { SKU: v.SKU })
+      // setbody(...body, { attribute: Object.keys(v.size) })
+      // setbody(...body, { value: Object.values(v.size) })
+      // console.log(body)
     }
     fetchcategorydata()
     fetchcolor()
     fetchattribute()
 
   }, [])
-  console.log(body)
+  //console.log(body)
   const paraToHtml = stateToHTML(para.getCurrentContent())
   const submit = async () => {
     const data = new FormData()

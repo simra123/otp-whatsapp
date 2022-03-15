@@ -63,7 +63,7 @@ const EmployeeTable = () => {
                 return (
                   <tr key={ index }>
                     <td>
-                      <img src={ value.image } class="rounded-circle" height="40" width="40" alt="" />
+                      <img src={ baseURL + value.image } class="rounded-circle" height="40" width="40" alt="" />
                     </td>
 
                     <td>{ value.name }</td>

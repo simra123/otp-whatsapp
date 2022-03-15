@@ -33,6 +33,7 @@ import { HiOutlineLocationMarker } from 'react-icons/hi'
 import { SuccessToast, ErrorToast } from '../components/toastify'
 //import toasts from react
 import { toast } from 'react-toastify'
+import baseURL from '../../middleware/BaseURL'
 
 const EmployeeForm = () => {
     const history = useHistory()
@@ -53,8 +54,8 @@ const EmployeeForm = () => {
     })
     useEffect(() => {
         const getAllEmployee = async () => {
-            const { data } = await Action.get(`/auth/employees?_id=${ id }`)
-            const res = data.data
+            const { data } = await Action.get(`/auth/employee?_id=${ id }`)
+            const res = data.data[0]
             setEdetails({
                 name: res.name,
                 email: res.email,
@@ -65,6 +66,7 @@ const EmployeeForm = () => {
                 usertype: 2,
                 password: res.password
             })
+            setImg(res.image)
         }
         getAllEmployee()
     }, [])
@@ -90,11 +92,21 @@ const EmployeeForm = () => {
             }
         })
     }
-    //post new employee
+    const formData = new FormData()
+    formData.append('file', img)
+    formData.append('name', Edetails.name)
+    formData.append('email', Edetails.email)
+    formData.append('password', Edetails.password)
+    formData.append('gender', Edetails.gender)
+    formData.append('userType', 2)
+    formData.append('city', Edetails.city)
+    formData.append('phone', Edetails.phone)
+    formData.append('address', Edetails.address)
+    //put employee
     const updateEmployee = async (e) => {
         e.preventDefault()
         setLoading(true)
-        const res = await Action.put(`/auth/employees/${ id }`, Edetails, {})
+        const res = await Action.put(`/auth/updateprofile/${ id }`, Edetails, {})
         console.log(res)
         if (res.data.success) {
             setTimeout(() => {
@@ -109,7 +121,7 @@ const EmployeeForm = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle tag='h4'>Add New Employee</CardTitle>
+                <CardTitle tag='h4'>Edit Employee</CardTitle>
             </CardHeader>
             <CardBody>
                 <Form>
@@ -222,7 +234,7 @@ const EmployeeForm = () => {
 
                             <h6> Employee Image </h6>
                             <DragDrop uppy={ uppy } />
-                            { img !== null ? <img className='rounded mt-2' src={ img } alt='avatar' /> : null }
+                            { img !== null ? <img className='rounded mt-2' height={ 180 } width={ 200 } src={ preview ? preview : baseURL + img } alt='avatar' /> : null }
                         </Col>
 
 

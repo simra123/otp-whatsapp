@@ -73,10 +73,20 @@ const EmployeeForm = () => {
       }
     })
   }
+  const formData = new FormData()
+  formData.append('file', img)
+  formData.append('name', Edetails.name)
+  formData.append('email', Edetails.email)
+  formData.append('password', Edetails.password)
+  formData.append('gender', Edetails.gender)
+  formData.append('userType', 2)
+  formData.append('city', Edetails.city)
+  formData.append('phone', Edetails.phone)
+  formData.append('address', Edetails.address)
   //post new employee
   const postEmployee = async (e) => {
     e.preventDefault()
-    const res = await Action.post(`/auth/register/employee`, Edetails, {})
+    const res = await Action.post(`/auth/register/employee`, formData, {})
     console.log(res)
     if (res.data.success) {
       setLoading(true)
@@ -206,7 +216,7 @@ const EmployeeForm = () => {
 
               <h6> Employee Image </h6>
               <DragDrop uppy={ uppy } />
-              { img !== null ? <img className='rounded mt-2' src={ img } alt='avatar' /> : null }
+              { img !== null ? <img className='rounded mt-2' src={ preview } alt='avatar' /> : null }
             </Col>
 
 
