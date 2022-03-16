@@ -298,31 +298,30 @@ const ProductForm = (props) => {
           <h4 className="py-2">Product Images</h4>
 
           <Row className="mb-2">
-            <Col sm="12">
-              {/* basic image upload */ }
+            {/* <Col sm="12">
 
-              <h6>Thumbnail Image (300x300)</h6>
-              <small>
-                This image is visible in all product box. Use 300x300 sizes
-                image. Keep some blank space around main object of your image as
-                we had to crop some edge in different devices to make it
-                responsive.
-              </small>
-              <div className="mt-2">
-                <DragDrop uppy={ uppy } />
-                { img !== null ? (
-                  <img
-                    className="rounded mt-2"
-                    // src={body.image ? (baseURL + body.image) : img}
-                    src={ img }
-                    alt="avatar"
-                    height="100"
-                    width="100"
-                  />
-                ) : null }
-              </div>
-            </Col>
-            <Col sm="12" className="mt-4">
+            <h6>Thumbnail Image (300x300)</h6>
+            <small>
+              This image is visible in all product box. Use 300x300 sizes
+              image. Keep some blank space around main object of your image as
+              we had to crop some edge in different devices to make it
+              responsive.
+            </small>
+            <div className="mt-2">
+              <DragDrop uppy={ uppy } />
+              { img !== null ? (
+                <img
+                  className="rounded mt-2"
+                  // src={body.image ? (baseURL + body.image) : img}
+                  src={ img }
+                  alt="avatar"
+                  height="100"
+                  width="100"
+                />
+              ) : null }
+            </div>
+          </Col> */}
+            <Col sm="12" className="mt-1">
               {/* basic image upload */ }
 
               <h6>Gallery Images (600x600)</h6>
@@ -463,7 +462,7 @@ const ProductForm = (props) => {
           </Row>
         </Form>
       </CardBody>
-    </Card>
+    </Card >
   )
 }
 export default ProductForm

@@ -31,7 +31,7 @@ const AttributeNames = () => {
       }
     }
     getAttNames()
-  }, [loading])
+  }, [loading, loading2, modal])
 
 
   const toggleModalDanger = id => {
@@ -64,12 +64,13 @@ const AttributeNames = () => {
       toast.error(<ErrorToast title="error" text={ res.data.message } />)
     }
   }
-  //et single
+  //get single
   const getSingleAttribute = async (id) => {
     try {
       const { data } = await Action.get(`/attribute?_id=${ id }`)
       const res = data.data[0]
-      updateName(res.attribute)
+      console.log(res.attribute)
+      setUpdateName(res.attribute)
     } catch (error) {
       console.log(error)
     }
@@ -79,7 +80,7 @@ const AttributeNames = () => {
     const res = await Action.delete(`/attribute?id=${ id }`)
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Attribute Deleted Succesfully!" />)
-      toggleModalDanger(did)
+      toggleModalDanger(id)
     } else {
       toast.error(<ErrorToast title="error" text={ res.data.message } />)
     }
@@ -87,7 +88,9 @@ const AttributeNames = () => {
   //update Name
   const putAttName = async (id) => {
     setLoading2(true)
-    const res = await Action.put(`/attribute/${ id }`, updateName)
+    const res = await Action.put(`/attribute/${ id }`, {
+      attribute: updateName
+    })
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="attribute Added Successfully!" />)
       setLoading2(false)
@@ -185,13 +188,13 @@ const AttributeNames = () => {
                                 <Col sm='12' >
                                   {/* color form */ }
                                   <Label for='att-name'>Attribute Name</Label>
-                                  <InputGroup className='input-group-merge' value={ updateName } onChange={ (e) => e.currentTarget.value } tag={ FormGroup }>
+                                  <InputGroup className='input-group-merge' tag={ FormGroup }>
                                     <InputGroupAddon addonType='prepend'>
                                       <InputGroupText>
                                         <CgAttribution size={ 15 } />
                                       </InputGroupText>
                                     </InputGroupAddon>
-                                    <Input type='text' name='name' value={ postName } placeholder='Enter your Attibute name' />
+                                    <Input type='text' name='name' value={ updateName } onChange={ (e) => setUpdateName(e.currentTarget.value) } placeholder='Enter your Attibute name' />
                                   </InputGroup>
                                 </Col>
 
