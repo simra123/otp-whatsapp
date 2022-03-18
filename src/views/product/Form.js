@@ -8,7 +8,6 @@ import { Editor } from "react-draft-wysiwyg"
 import "../../@core/scss/react/libs/editor/editor.scss"
 import "../../@core/scss/react/libs/file-uploader/file-uploader.scss"
 import "uppy/dist/uppy.css"
-import MultipleUploader from "@src/views/forms/form-elements/file-uploader/FileUploaderMulti"
 import { selectThemeColors } from "@utils"
 import Select from "react-select"
 import { MdOutlineProductionQuantityLimits } from "react-icons/md"
@@ -33,83 +32,88 @@ import {
   InputGroupAddon,
   Spinner
 } from "reactstrap"
-import { FaAddressBook, FaDollarSign } from "react-icons/fa"
+import { FaDollarSign } from "react-icons/fa"
 import Action from "../../middleware/API"
-import baseURL from "../../middleware/BaseURL"
 
-//   hardcoded colors
+// {
+//   name: "gel hydroalcoolique pour les mains",
+//   color: [
+//       {
+//           name: "Bleue",
+//           code: "cyan"
+//       }
+//   ],
+//   size: [
+//       {
+//           "length": [
+//               "medium",
+//               "Long"
+//           ]
+//       }
+//   ],
+//   image: [imgs],
+//   price: 105,
+//   description: "Dans l'édition et la conception graphique, Lorem ipsum est un texte d'espace réservé couramment utilisé pour démontrer la forme visuelle d'un document ou d'une police de caractères sans s'appuyer sur un contenu significatif. Lorem ipsum peut être utilisé comme espace réservé avant que la copie finale ne soit disponible.",
+//   quantity: 10,
+//   SKU: "32423423",
+// },
 
-//   hardcoded categories
-
-//   hardcoded att names
-// const attNames = [
-//     { value: 'size', label: 'size' },
-//     { value: 'size', label: 'size' }
-// ]
-//   hardcoded att values
-// const attValue = [
-//     { value: 'small', label: 'small' },
-//     { value: 'large', label: 'large' }
-// ]
-// const categories = [
-//   { value: 't-shirts', label: 'T Shirts' },
-//   { value: 'caps', label: 'Caps' },
-//   { value: 'sweat-shirts', label: 'Sweat Shirts' }
-// ]
 
 const ProductForm = (props) => {
 
   //  file Uploader
-  const [img, setImg] = useState(null)
+  const [imgs, setImgs] = useState([])
   //text editor
   const [value, setValue] = useState(EditorState.createEmpty())
   const history = useHistory()
 
+
+  // multiple file uploader
+  const [previewArr, setPreviewArr] = useState([])
+
+
   const uppy = new Uppy({
-    meta: { type: "avatar" },
-    restrictions: { maxNumberOfFiles: 1 },
+    meta: { type: 'avatar' },
     autoProceed: true
   })
 
   uppy.use(thumbnailGenerator)
 
-  uppy.on("thumbnail:generated", (file, preview) => {
-    setImg(preview)
-  })
-
-  // multiple file uploader
-  const [previewArr, setPreviewArr] = useState([])
-
-  const uppyMultiple = new Uppy({
-    meta: { type: "avatar" },
-    autoProceed: true
-  })
-
-  uppyMultiple.use(thumbnailGenerator)
-  // uppy.use(XHRUpload, {
-  //   endpoint:'http://localhost:4000/product',
-  //   fieldName:'file',
-  //   formDate: true
-
-  // })
-  uppyMultiple.on("thumbnail:generated", (file, preview) => {
+  uppy.on('thumbnail:generated', (file, preview) => {
     const arr = previewArr
     arr.push(preview)
     setPreviewArr([...arr])
+    const arrImg = imgs
+    arrImg.push(file.data)
+    setImgs([...arrImg])
   })
+  console.log(imgs)
 
-  // const renderPreview = () => {
-  //   if (previewArr.length) {
-  //     return previewArr.map((src, index) => (
-  //       <img key={index} className="rounded mt-2 mr-1" src={src} alt="avatar" />
-  //     ))
-  //   } else {
-  //     return null
-  //   }
-  // }
+  const renderPreview = () => {
+    if (previewArr.length) {
+      return previewArr.map((src, index) => <img key={ index } className='rounded mt-2 mr-1' src={ src } alt='avatar' />)
+    } else {
+      return null
+    }
+  }
 
   const [category, setcategory] = useState([])
-  const [colors, setcolors] = useState([])
+  const [colors, setcolors] = useState(
+    [
+      {
+        name: 'Bleue',
+        code: 'cyan'
+      },
+      {
+        name: 'Bleddue',
+        code: 'cyan'
+      },
+      {
+        name: 'Bldqweue',
+        code: 'cyan'
+      }
+    ]
+  )
   const [attribute, setattribute] = useState([])
   const [values, setvalues] = useState([])
   const [para, setPara] = useState(EditorState.createEmpty())
@@ -139,20 +143,20 @@ const ProductForm = (props) => {
     }
   }
 
-  const fetchcolor = async () => {
-    const response = await Action.get("/color", {})
+  // const fetchcolor = async () => {
+  //   const response = await Action.get("/color", {})
 
-    if (response.data.success === true) {
-      response.data.data.map((item, index) => {
-        response.data.data[index].value = item.color
-        response.data.data[index].label = item.color
-      })
+  //   if (response.data.success === true) {
+  //     response.data.data.map((item, index) => {
+  //       response.data.data[index].value = item.color
+  //       response.data.data[index].label = item.color
+  //     })
 
-      setcolors(response.data.data)
-    } else {
-      setcolors([])
-    }
-  }
+  //     setcolors(response.data.data)
+  //   } else {
+  //     setcolors([])
+  //   }
+  // }
   const fetchattribute = async () => {
     const response = await Action.get("/attribute", {})
 
@@ -196,24 +200,44 @@ const ProductForm = (props) => {
       // console.log(body)
     }
     fetchcategorydata()
-    fetchcolor()
+    // fetchcolor()
     fetchattribute()
 
   }, [])
-  //console.log(body)
+  const data = new FormData()
+  // data.append('name', 'body.name')
+  // data.append('quantity', 'body.minQuantity')
+  // imgs.map((file, index) => {
+  //   data.append('file', 'keucpoweufweofioweio')
+
+  // })
+  // data.append('category', 'body.category')
+  // colors.map((color, index) => {
+  //   data.append('color', color)
+  //   console.log(color)
+  // })
+  // data.append('price', 'body.price')
+  // data.append('description', 'body.quantity')
+  // data.append('SKU', 'body.SKU')
+  // data.append('size', {
+  //   length: ["moyenne"]
+  // })
+  data.append('name', 'body.name')
+  //data.append('file', '[]')
+  //data.append('file', imgs[0])
+  data.append('category', 'body.category')
+  data.append('color', '[{"name":"Blue","code":"#FFFFFF"}]')
+  data.append('price', ' body.price')
+  data.append('quantity', ' body.quantity')
+  data.append('SKU', 'body.SKU')
+  data.append('description', 'paraToHtml')
+  data.append('size', '[{"length":["medium","medium"]},{"length":"medium"}]')
+  console.log(imgs[0])
   const paraToHtml = stateToHTML(para.getCurrentContent())
   const submit = async () => {
-    const data = new FormData()
-    data.append('name', body.name)
-    data.append('minQuantity', body.minQuantity)
-    data.append('file', img)
-    data.append('category', body.category)
-    data.append('color', body.color)
-    data.append('price', body.price)
-    data.append('quantity', body.quantity)
-    data.append('SKU', body.SKU)
-    data.append('comments', paraToHtml)
+
     const response = await Action.post(`/product`, data, {})
+    console.log(response)
     if (response.data.success === true) {
       toast.success(
         <SuccessToast title="Success" text="Category added Successfully!" />
@@ -284,11 +308,10 @@ const ProductForm = (props) => {
                 theme={ selectThemeColors }
                 className="react-select"
                 classNamePrefix="select"
-                defaultValue={ category }
+                defaultValue={ category[0] }
                 onChange={ (e) => {
                   setbody({ ...body, category: e._id })
                 } }
-                value={ body.category }
                 options={ category }
                 isClearable={ false }
               />
@@ -330,7 +353,15 @@ const ProductForm = (props) => {
                 600x600 sizes images.
               </small>
               <div className="mt-1">
-                <MultipleUploader />
+                <Card>
+                  <CardHeader>
+                    <CardTitle tag='h4'> Multiple Files Upload</CardTitle>
+                  </CardHeader>
+                  <CardBody>
+                    <DragDrop uppy={ uppy } />
+                    { renderPreview() }
+                  </CardBody>
+                </Card>
               </div>
             </Col>
           </Row>

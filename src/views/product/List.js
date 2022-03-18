@@ -5,11 +5,16 @@ import 'uppy/dist/uppy.css'
 import { MoreVertical, Edit, Trash, User } from 'react-feather'
 import Action from '../../middleware/API'
 import baseURL from '../../middleware/BaseURL'
-
-import { Card, Spinner, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
+//import toast types from components 
+import { SuccessToast, ErrorToast } from '../components/toastify'
+//import toasts from react
+import { toast } from 'react-toastify'
+import { Card, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
 
 const Banner = () => {
   const [products, setProducts] = useState([])
+  const [modal, setModal] = useState(null)
+
   useEffect(() => {
     const getProducts = async () => {
       try {
@@ -22,16 +27,26 @@ const Banner = () => {
 
     }
     getProducts()
-  }, [])
-  const [modal, setModal] = useState(null)
+  }, [modal])
 
   const toggleModalDanger = id => {
     if (modal !== id) {
       setModal(id)
+    } else {
       setModal(null)
     }
   }
 
+  //delete api
+  const deleteProduct = async (id) => {
+    const res = await Action.delete(`/product?id=${ id }`)
+    if (res.data.success) {
+      toast.success(<SuccessToast title="Success" text="Product Deleted Succesfully!" />)
+      toggleModalDanger(id)
+    } else {
+      toast.error(<ErrorToast title="error" text={ res.data.message } />)
+    }
+  }
 
   return (
     <>
@@ -75,7 +90,7 @@ const Banner = () => {
 
                             <DropdownItem href='/' onClick={ (e) => {
                               e.preventDefault()
-                              toggleModalDanger(value.id)
+                              toggleModalDanger(value._id)
                             } }>
                               <Trash className='mr-50' size={ 15 } /> <span className='align-middle'>Delete</span>
                             </DropdownItem>
@@ -85,17 +100,17 @@ const Banner = () => {
 
                         {/* delete modal */ }
                         <Modal
-                          isOpen={ modal === value.id }
-                          toggle={ () => toggleModalDanger(value.id) }
+                          isOpen={ modal === value._id }
+                          toggle={ () => toggleModalDanger(value._id) }
                           className='modal-dialog-centered'
                           modalClassName="modal-danger"
-                          key={ value.id }>
-                          <ModalHeader toggle={ () => toggleModalDanger(value.id) }>Delete</ModalHeader>
+                          key={ value._id }>
+                          <ModalHeader toggle={ () => toggleModalDanger(value._id) }>Delete</ModalHeader>
                           <ModalBody>
                             Are you sure you want to delete this?
                           </ModalBody>
                           <ModalFooter>
-                            <Button color="danger" onClick={ () => toggleModalDanger(value.id) }>
+                            <Button color="danger" onClick={ () => deleteProduct(value._id) }>
                               delete
                             </Button>
                           </ModalFooter>

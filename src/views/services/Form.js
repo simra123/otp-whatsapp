@@ -54,6 +54,7 @@ const ServiceForm = () => {
   uppy.on('thumbnail:generated', (file, preview) => {
     setImg(file.data)
     setPreview(preview)
+
   })
   //conveting the text from editor into plain html
   const paraToHtml = stateToHTML(para.getCurrentContent())
@@ -70,7 +71,7 @@ const ServiceForm = () => {
   data.append('paragraph', paraToHtml)
   data.append('heading', sName)
   data.append('file', img)
-
+  console.log(data)
   //post api
   const postService = async (e) => {
     e.preventDefault()
