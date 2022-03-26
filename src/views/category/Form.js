@@ -59,9 +59,6 @@ const CategoryForm = () => {
         setImg(file.data)
         setPreview(preview)
     })
-    console.log(img)
-    console.log(preview)
-
 
     const onChangeEvent = (e) => {
         const { name, value } = e.target
@@ -81,14 +78,12 @@ const CategoryForm = () => {
     //post api
     const postCategory = async (e) => {
         e.preventDefault()
+        setSuccess(true)
         const res = await Action.post("/category", data)
 
         if (res.data.success) {
             toast.success(<SuccessToast title="Success" text="Category added Successfully!" />)
-            setSuccess(true)
-            setTimeout(() => {
-                history.push('/category/list')
-            }, 1000)
+            history.push('/category/list')
 
         } else {
             console.log(error)

@@ -22,12 +22,13 @@ const CategoryTable = () => {
       try {
         const { data } = await Action.get('/category')
         setAllCategories(data.data)
+        console.log(data)
       } catch (error) {
         console.log(error)
       }
     }
     getCategories()
-  }, [allCategories])
+  }, [modal])
   const toggleModal = id => {
     if (modal !== id) {
       setModal(id)

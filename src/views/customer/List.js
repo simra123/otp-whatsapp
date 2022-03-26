@@ -5,39 +5,8 @@ import { SuccessToast, ErrorToast } from '../components/toastify'
 //import toasts from react
 import { toast } from 'react-toastify'
 import baseURL from '../../middleware/BaseURL'
-import avatar1 from '@src/assets/images/portrait/small/avatar-s-5.jpg'
-import { Link } from 'react-router-dom'
 import { MoreVertical, Edit, Trash } from 'react-feather'
 import { Card, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
-
-
-// table data
-const ALlEmployee = [
-  {
-    id: 0,
-    title: 'Peter Charles',
-    image: avatar1,
-    email: 'simrafcb@gmail.com'
-  },
-  {
-    id: 1,
-    title: 'Peter Charles',
-    image: avatar1,
-    email: 'simrafcb@gmail.com'
-  },
-  {
-    id: 2,
-    title: 'Peter Charles',
-    image: avatar1,
-    email: 'simrafcb@gmail.com'
-  },
-  {
-    id: 3,
-    title: 'Peter Charles',
-    image: avatar1,
-    email: 'simrafcb@gmail.com'
-  }
-]
 
 
 const CustomerTable = () => {
@@ -57,6 +26,19 @@ const CustomerTable = () => {
       setModal(id)
     } else {
       setModal(null)
+    }
+  }
+  //delete api
+  const deleteUser = async (id) => {
+    const res = await Action.delete(`/auth/deleteuser?id=${ id }`)
+
+    if (res.data.success) {
+      toast.success(<SuccessToast title="Success" text="Customer Deleted Successfully!" />)
+      setModal(null)
+    } else {
+      toast.error(<ErrorToast title="error" text="Something went wrong, try again later" />)
+      setModal(null)
+
     }
   }
   return (
@@ -117,7 +99,7 @@ const CustomerTable = () => {
                           Are you sure you want to delete this?
                         </ModalBody>
                         <ModalFooter>
-                          <Button color="danger" onClick={ () => toggleModal(value._id) }>
+                          <Button color="danger" onClick={ () => deleteUser(value._id) }>
                             delete
                           </Button>
                         </ModalFooter>

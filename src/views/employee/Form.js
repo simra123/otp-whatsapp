@@ -86,15 +86,13 @@ const EmployeeForm = () => {
   //post new employee
   const postEmployee = async (e) => {
     e.preventDefault()
+    setLoading(true)
+
     const res = await Action.post(`/auth/register/employee`, formData, {})
     console.log(res)
     if (res.data.success) {
-      setLoading(true)
-      setTimeout(() => {
-        toast.success(<SuccessToast title="Success" text="settings updated Successfully!" />)
-        setLoading(false)
-        history.push('/employee/list')
-      }, 2000)
+      toast.success(<SuccessToast title="Success" text="settings updated Successfully!" />)
+      history.push('/employee/list')
     } else {
       setLoading(false)
       toast.error(<ErrorToast title="error" text={ res.data.message } />)

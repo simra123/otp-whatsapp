@@ -15,7 +15,7 @@ export default [
   //   icon: <Mail size={20} />,
   //   navLink: '/apps/email'
   // },
-  // 
+  //
   // {
   //   id: 'todo',
   //   title: 'Todo',
@@ -354,12 +354,12 @@ export default [
     title: 'Mobile Application',
     icon: <Smartphone size={ 20 } />,
     children: [
-      {
-        id: 'mobile',
-        title: 'Banners',
-        icon: <Circle size={ 12 } />,
-        navLink: '/mobile-app/banners'
-      },
+      // {
+      //   id: 'mobile',
+      //   title: 'Banners',
+      //   icon: <Circle size={ 12 } />,
+      //   navLink: '/mobile-app/banners'
+      // },
       {
         id: 'm-screens',
         title: 'Splash Screens',

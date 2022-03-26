@@ -21,14 +21,15 @@ const ServiceTable = () => {
       setAllServices(response.data.data)
     }
   }
+  const [modal, setModal] = useState(null)
+
 
   useEffect(async () => {
     fetchServiceData()
     allServices.map((value) => {
     })
-  }, [allServices])
+  }, [modal])
 
-  const [modal, setModal] = useState(null)
 
   const toggleModal = id => {
     if (modal !== id) {

@@ -4,6 +4,7 @@ import thumbnailGenerator from '@uppy/thumbnail-generator'
 import { DragDrop } from '@uppy/react'
 import '../../@core/scss/react/libs/file-uploader/file-uploader.scss'
 import 'uppy/dist/uppy.css'
+import Select from 'react-select'
 import { MoreVertical, Edit, Trash } from 'react-feather'
 import Action from '../../middleware/API'
 import baseURL from '../../middleware/BaseURL'
@@ -14,6 +15,18 @@ import { toast } from 'react-toastify'
 
 import { Card, Spinner, Form, Row, Col, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
 
+const langs = [
+  {
+    value: 'French',
+    label: 'French'
+  },
+  {
+    value: 'English',
+    label: 'English'
+  }
+
+
+]
 
 const DesktopBanner = () => {
   const [modal, setModal] = useState(null)
@@ -23,16 +36,15 @@ const DesktopBanner = () => {
   //previews
   const [preview, setPreview] = useState([])
   const [preview2, setPreview2] = useState([])
-
+  const [lang, setLang] = useState('French')
 
   useEffect(() => {
     const getBanners = async () => {
-      const { data } = await Action.get(`/banner/mobile`)
+      const { data } = await Action.get(`/banner/mobile?lang=${ lang }`)
       setBanners(data.data)
-      console.log(data)
     }
     getBanners()
-  })
+  }, [modal, modal2, modal3])
 
   const toggleModalDanger = id => {
     if (modal !== id) {
@@ -87,6 +99,7 @@ const DesktopBanner = () => {
   //post data 
   const uploadData = new FormData()
   uploadData.append('file', uploadImg)
+  uploadData.append('lang', lang)
 
   //post api 
   const postBanner = async (e) => {
@@ -134,10 +147,21 @@ const DesktopBanner = () => {
       <Card>
         <CardBody>
           <CardTitle>All Mobile Banners </CardTitle>
+          <div className='d-flex'>
+            <Select
+              className='react-select w-25'
+              defaultValue={ lang }
+              options={ langs }
+              style={ { width: "150px" } }
+              onChange={ (e) => setLang(e.value) }
+            />
+            <div className="ml-auto mb-2">
+              <Button color="primary" onClick={ () => toggleAddNew(0) }>
+                Add new Banner
+              </Button>
+            </div>
+          </div>
           <div className="float-right mb-2">
-            <Button color="primary" onClick={ () => toggleAddNew(0) }>
-              Add new Banner
-            </Button>
             <Modal
               isOpen={ modal3 === 0 }
               toggle={ () => toggleAddNew(0) }

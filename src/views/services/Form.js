@@ -75,14 +75,13 @@ const ServiceForm = () => {
   //post api
   const postService = async (e) => {
     e.preventDefault()
+    setSuccess(true)
+
     const res = await Action.post(`/service`, data, {})
 
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Service added Successfully!" />)
-      setSuccess(true)
-      setTimeout(() => {
-        history.push('/services/list')
-      }, 1000)
+      history.push('/services/list')
     } else {
       setSuccess(false)
       toast.error(<ErrorToast title="error" text="Something went wrong, try again later" />)
