@@ -15,11 +15,11 @@ const PagesRoutes = [
   //   component: lazy(() => import('../../views/pages/authentication/LoginV1')),
   //   layout: 'BlankLayout'
   // },
-  // {
-  //   path: '/pages/login-v2',
-  //   component: lazy(() => import('../../views/pages/authentication/LoginV2')),
-  //   layout: 'BlankLayout'
-  // },
+  {
+    path: '/pages/login-v2',
+    component: lazy(() => import('../../views/pages/authentication/Login')),
+    layout: 'BlankLayout'
+  },
   // {
   //   path: '/register',
   //   component: lazy(() => import('../../views/pages/authentication/Register')),

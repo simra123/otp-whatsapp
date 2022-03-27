@@ -28,9 +28,8 @@ import {
   Button,
   Spinner
 } from 'reactstrap'
-
 import '@styles/base/pages/page-auth.scss'
-
+import Action from '../../../middleware/API'
 const ToastContent = ({ name, role }) => (
   <Fragment>
     <div className='toastify-header'>
@@ -50,133 +49,143 @@ const Login = props => {
   const ability = useContext(AbilityContext)
   const dispatch = useDispatch()
   const history = useHistory()
+  // const [email, setEmail] = useState('dfsdf@mail.com')
+  // const [password, setPassword] = useState('dfdfdf')
   const [email, setEmail] = useState('admin@demo.com')
   const [password, setPassword] = useState('admin')
   // const [email, setEmail] = useState('khatri123@mail.com')
   // const [password, setPassword] = useState('dfdfdf')
 
   const { register, errors, handleSubmit } = useForm()
-  const illustration = skin === 'dark' ? 'login-v2-dark.svg' : 'login-v2.svg',
-    source = require(`@src/assets/images/pages/${illustration}`).default
+  // const illustration = skin === 'dark' ? 'login-v2-dark.svg' : 'login-v2.svg',
+  //   source = require(`@src/assets/images/pages/${illustration}`).default
+  // const onSubmit = () => {
 
-  const onSubmit = data => {
+  //   Action
+  //   .post("/auth/login", { email, password })
+  //   .then(res => {
+  //     console.log(res) 
+  //   })
+  //   }
+  const Submit = () => {
     if (isObjEmpty(errors)) {
-      useJwt
-        .login({ email, password })
-        .then(res => {
-          const data = { ...res.data.userData, accessToken: res.data.accessToken, refreshToken: res.data.refreshToken }
-          dispatch(handleLogin(data))
-          ability.update(res.data.userData.ability)
-          history.push(getHomeRouteForLoggedInUser(1))
-          toast.success(
-            <ToastContent name={data.fullName || data.username || 'John Doe'} role={data.role || 'admin'} />,
-            { transition: Slide, hideProgressBar: true, autoClose: 2000 }
-          )
-          
-        })
-        .catch(err => console.log(err))
-    }
+        useJwt
+          .login({ email, password })
+          .then(res => {
+            const data = { ...res.data.userData, accessToken: res.data.accessToken, refreshToken: res.data.refreshToken }
+            console.log(data)
+            dispatch(handleLogin(data))
+            ability.update(res.data.userData.ability)
+            history.push(getHomeRouteForLoggedInUser(1))
+            toast.success(
+              <ToastContent name={data.fullName || data.username || 'John Doe'} role={data.role || 'admin'} />,
+              { transition: Slide, hideProgressBar: true, autoClose: 2000 }
+            )
 
-//     Action
-//     .post("/auth/login", { email, password })
-//     .then(res => {
-//       console.log(res)
-//       // const data = { ...res.data.userData, accessToken: res.data.accessToken, refreshToken: res.data.refreshToken }
-//       if (res.data.success === true) {
+          })
+          .catch(err => console.log(err))
+      }
 
-//         dispatch(handleLogin(res.data.data))
-//         ability.update([{action:"manage", subject:"all"}])
-//         history.push(getHomeRouteForLoggedInUser(res.data.data.usetype))
-//         toast.success(
-//           <ToastContent name={res.data.data.name} role={res.data.data.usertype === 1 ?  'admin' : "client"} />,
+    //   Action
+    //     .post("/auth/login", { email, password })
+    //     .then(res => {
+    //       console.log(res)
+    //       const data = { ...res.data.data, accessToken: res.data.token, refreshToken: res.data.refreshToken }
+    //       if (res.data.success === true) {
+    //         const data = { ...res.data.data, accessToken: res.data.accessToken, refreshToken: res.data.refreshToken }
+    //         dispatch(handleLogin(data))
+    //         ability.update([{ action: "manage", subject: "all" }])
+    //         history.push(getHomeRouteForLoggedInUser(res.data.data.usetype))
+    //         toast.success(
+    //           <ToastContent name={res.data.data.name} role={res.data.data.usertype === 1 ? 'admin' : "client"} />,
 
-//           { transition: Slide, hideProgressBar: true, autoClose: 2000 }
-//           )
-//         } else {
-          
-//           toast.error(
-//             <ToastContent name={res.data.data.name} role={res.data.data.usertype === 1 ?  'admin' : "client"} />,
-//             { transition: Slide, hideProgressBar: true, autoClose: 2000 }
-//             )
-//         }
-//     })
-//     .catch(err => console.log(err))
-// }    
+    //           { transition: Slide, hideProgressBar: true, autoClose: 2000 }
+    //         )
+    //       } else {
+
+    //         toast.error(
+    //           <ToastContent name={res.data.data.name} role={res.data.data.usertype === 1 ? 'admin' : "client"} />,
+    //           { transition: Slide, hideProgressBar: true, autoClose: 2000 }
+    //         )
+    //       }
+    //     })
+    //     .catch(err => console.log(err))
+    // }   
   }
-  return (
-        <div className='auth-wrapper auth-v2'>
-    <Row className='auth-inner m-0'>
-    {/* <Link className='brand-logo lg:hidden' to='/' onClick={e => e.preventDefault()}>
+    return (
+      <div className='auth-wrapper auth-v2'>
+        <Row className='auth-inner m-0'>
+          {/* <Link className='brand-logo lg:hidden' to='/' onClick={e => e.preventDefault()}>
       <img src={Logo} width="100" height="120" alt=""/>
     </Link> */}
-    <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
-      <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
-        <img className='img-fluid' src={Logo} alt='Login' width="400" height="400" />
-      </div>
-    </Col>
-    <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
-      <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
-        <CardTitle tag='h2' className='font-weight-bold mb-1'>
-          Welcome to Admin!
-        </CardTitle>
-        <CardText className='mb-2'>Please sign-in to your account and start the adventure</CardText>
-            <Form className='auth-login-form mt-2' onSubmit={handleSubmit(onSubmit)}>
-              <FormGroup>
-                <Label className='form-label' for='login-email'>
-                  Email
-                </Label>
-                <Input
-                  autoFocus
-                  type='email'
-                  value={email}
-                  id='login-email'
-                  name='login-email'
-                  placeholder='john@example.com'
-                  onChange={e => setEmail(e.target.value)}
-                  className={classnames({ 'is-invalid': errors['login-email'] })}
-                  innerRef={register({ required: true, validate: value => value !== '' })}
-                />
-              </FormGroup>
-              <FormGroup>
-                <div className='d-flex justify-content-between'>
-                  <Label className='form-label' for='login-password'>
-                    Password
-                  </Label>
-                </div>
-                <InputPasswordToggle
-                  value={password}
-                  id='login-password'
-                  name='login-password'
-                  className='input-group-merge'
-                  onChange={e => setPassword(e.target.value)}
-                  className={classnames({ 'is-invalid': errors['login-password'] })}
-                  innerRef={register({ required: true, validate: value => value !== '' })}
-                />
-              </FormGroup>
-            
-              <FormGroup className="d-flex">
-                <CustomInput type='checkbox' className='custom-control-Primary mr-80' id='remember-me' label='Remember Me' />
-               <div className="ml-auto">
-               <Link to='/forgot-password'>
-                    <small className="text-right">Forgot Password?</small>
-                </Link>
-               </div>
-              </FormGroup>
-           
-              <Button.Ripple type='submit' color='primary' block>
-                Sign in 
-                {/* spinner */}
-                {/* <Spinner color='light' /> */}
-              </Button.Ripple>
-          
-              
-            </Form>
+          <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
+            <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
+              <img className='img-fluid' src={Logo} alt='Login' width="400" height="400" />
+            </div>
           </Col>
-        </Col>
-      </Row>
-    </div>
-  )
-}
-           
+          <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>
+            <Col className='px-xl-2 mx-auto' sm='8' md='6' lg='12'>
+              <CardTitle tag='h2' className='font-weight-bold mb-1'>
+                Welcome to Admin!
+              </CardTitle>
+              <CardText className='mb-2'>Please sign-in to your account and start the adventure</CardText>
+              <Form className='auth-login-form mt-2'>
+                <FormGroup>
+                  <Label className='form-label' for='login-email'>
+                    Email
+                  </Label>
+                  <Input
+                    autoFocus
+                    type='email'
+                    value={email}
+                    id='login-email'
+                    name='login-email'
+                    placeholder='john@example.com'
+                    onChange={e => setEmail(e.target.value)}
+                    className={classnames({ 'is-invalid': errors['login-email'] })}
+                    innerRef={register({ required: true, validate: value => value !== '' })}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <div className='d-flex justify-content-between'>
+                    <Label className='form-label' for='login-password'>
+                      Password
+                    </Label>
+                  </div>
+                  <InputPasswordToggle
+                    value={password}
+                    id='login-password'
+                    name='login-password'
+                    className='input-group-merge'
+                    onChange={e => setPassword(e.target.value)}
+                    // className={classnames({ 'is-invalid': errors['login-password'] })}
+                    innerRef={register({ required: true, validate: value => value !== '' })}
+                  />
+                </FormGroup>
 
-export default Login
+                <FormGroup className="d-flex">
+                  <CustomInput type='checkbox' className='custom-control-Primary mr-80' id='remember-me' label='Remember Me' />
+                  <div className="ml-auto">
+                    <Link to='/forgot-password'>
+                      <small className="text-right">Forgot Password?</small>
+                    </Link>
+                  </div>
+                </FormGroup>
+
+                <Button.Ripple type='submit' color='primary' block onClick={(e) => {
+                  e.preventDefault()
+                  Submit()
+                }}>
+                  Sign in
+                  {/* <Spinner color='light' />  */}
+                </Button.Ripple>
+              </Form>
+            </Col>
+          </Col>
+        </Row>
+      </div>
+    )
+  }
+
+
+  export default Login

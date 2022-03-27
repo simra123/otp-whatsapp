@@ -77,24 +77,24 @@ const CategoryForm = () => {
     data.append('heading', category.heading)
     data.append('text', category.text)
     data.append('file', img)
-
     //post api
+    console.log(data)
     const postCategory = async (e) => {
         e.preventDefault()
-        const res = await Action.post("/category", data)
+        // const res = await Action.post("/category", data)
 
-        if (res.data.success) {
-            toast.success(<SuccessToast title="Success" text="Category added Successfully!" />)
-            setSuccess(true)
-            setTimeout(() => {
-                history.push('/category/list')
-            }, 1000)
+        // if (res.data.success) {
+        //     toast.success(<SuccessToast title="Success" text="Category added Successfully!" />)
+        //     setSuccess(true)
+        //     setTimeout(() => {
+        //         history.push('/category/list')
+        //     }, 1000)
 
-        } else {
-            console.log(error)
-            setSuccess(false)
-            toast.error(<ErrorToast title="error" text="Something went wrong, try again later" />)
-        }
+        // } else {
+        //     console.log(error)
+        //     setSuccess(false)
+        //     toast.error(<ErrorToast title="error" text="Something went wrong, try again later" />)
+        // }
 
     }
 

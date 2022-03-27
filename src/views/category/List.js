@@ -27,7 +27,7 @@ const CategoryTable = () => {
       }
     }
     getCategories()
-  }, [allCategories])
+  }, [])
   const toggleModal = id => {
     if (modal !== id) {
       setModal(id)
