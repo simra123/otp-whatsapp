@@ -65,13 +65,14 @@ const FAQForm = () => {
     //post api
     const updateFAQ = async (e) => {
         e.preventDefault()
+        setSuccess(true)
+
         const res = await Action.put(`/faq/${ id }`, {
             question: quest,
             answer: answerToHtml
         })
         if (res.data.success) {
             toast.success(<SuccessToast title="Success" text="FAQ updated Successfully!" />)
-            setSuccess(true)
             setTimeout(() => {
                 history.push('/faq/list')
             }, 1000)

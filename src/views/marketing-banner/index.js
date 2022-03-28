@@ -50,7 +50,7 @@ const Banner = () => {
 
   useEffect(() => {
     const getBanner = async () => {
-      const { data } = await Action.get(`/banner/market?lang=${ lang }`)
+      const { data } = await Action.get(`/banner/market?lang=french`)
       setImg(data.data[0])
       setId(data.data[0]._id)
     }

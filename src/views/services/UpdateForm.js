@@ -92,13 +92,11 @@ const ServiceForm = () => {
     const updateService = async (e) => {
         e.preventDefault()
         const res = await Action.put(`/Service/${ id }`, data, {})
+        setSuccess(true)
 
         if (res.data.success) {
             toast.success(<SuccessToast title="Success" text="Service updated Successfully!" />)
-            setSuccess(true)
-            setTimeout(() => {
-                history.push('/services/list')
-            }, 1000)
+            history.push('/services/list')
         } else {
             setSuccess(false)
             toast.error(<ErrorToast title="error" text="Something went wrong, try again later" />)

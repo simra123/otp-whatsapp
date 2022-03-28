@@ -96,14 +96,12 @@ const CategoryForm = () => {
   //put api
   const updateCategory = async (e) => {
     e.preventDefault()
+    setSuccess(true)
+
     const res = await Action.put(`/category/${ _id }`, data, {})
-    console.log(res)
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Category updated Successfully!" />)
-      setSuccess(true)
-      setTimeout(() => {
-        history.push('/category/list')
-      }, 1000)
+      history.push('/category/list')
     } else {
       console.log(res.data.message)
       setSuccess(false)
@@ -163,7 +161,7 @@ const CategoryForm = () => {
 
               <h6> Category Image </h6>
               <DragDrop uppy={ uppy } />
-              { img !== null ? <img className='rounded mt-2' src={ preview ? preview : BaseURL + img } alt='avatar' /> : null }
+              { img !== null ? <img className='rounded mt-2' height={ 200 } width={ 'auto' } src={ preview ? preview : BaseURL + img } alt='avatar' /> : null }
             </Col>
 
             <Col sm='12' className="mt-4">

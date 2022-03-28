@@ -31,9 +31,10 @@ const DesktopBanner = () => {
     const getBanners = async () => {
       const { data } = await Action.get(`/banner/web?lang=${ lang }`)
       setBanners(data.data)
+      console.log(data)
     }
     getBanners()
-  })
+  }, [modal, modal2, modal3])
 
   const toggleModalDanger = id => {
     if (modal !== id) {
@@ -106,8 +107,6 @@ const DesktopBanner = () => {
   const postBanner = async (e) => {
     e.preventDefault()
     const res = await Action.post(`/banner/web`, uploadData, {})
-    console.log(res)
-    console.log(res)
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Banner Uploaded Successfully!" />)
       setModal3(null)
