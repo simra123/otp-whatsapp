@@ -273,6 +273,20 @@ const AppRoutes = [
     }
   },
   {
+    path: '/pagination',
+    component: lazy(() => import('../../views/components/pagination')),
+    meta: {
+      navLink: '/pagination'
+    }
+  },
+  {
+    path: '/product/edit/:id',
+    component: lazy(() => import('../../views/product/UpdateForm')),
+    meta: {
+      navLink: '/product/form'
+    }
+  },
+  {
     path: '/attribute/name',
     component: lazy(() => import('../../views/attribute/Name')),
     meta: {

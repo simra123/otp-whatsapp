@@ -2,7 +2,8 @@
 import { Link } from 'react-router-dom'
 import { AiOutlineCloudDownload, AiOutlineDelete } from 'react-icons/ai'
 import avatar1 from '@src/assets/images/portrait/small/avatar-s-5.jpg'
-import Pagination from './pagination'
+import Pagination from '@src/views/components/pagination/PaginationBasic'
+
 
 // ** Third Party Components
 import { Eye } from 'react-feather'
@@ -28,6 +29,7 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
       try {
         const { data } = await Action.get('/order')
         setAllOrders(data.data)
+        console.log(data.data)
       } catch (error) {
         console.log(error)
       }
@@ -40,15 +42,23 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
     const GetProducts = async () => {
       try {
         const { data } = await Action.get('/product')
-        setAllProducts(data.data)
-        console.log(data.data)
       } catch (error) {
         console.log(error)
       }
     }
     GetProducts()
   }, [])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [dataPerPage, setDataPerPage] = useState(4)
+  //setting pages into the pagination
+  const indexOfLastPage = currentPage * dataPerPage//5
+  const indexOfFirstPage = indexOfLastPage - dataPerPage //0
 
+  const currentData = allOrders.slice(indexOfFirstPage, indexOfLastPage)
+  const totalPages = allOrders.length //15
+
+  //change pages onclick 
+  const Paginate = (pageNumber) => { setCurrentPage(pageNumber) }
   return (
     <Card>
       <CardBody>
@@ -83,14 +93,12 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
             </thead>
             <tbody>
               {
-                allOrders.map((data, i) => {
-                  return (
-                  allProducts.map((value) => {
+                currentData.map((data, i) => {
                   return (
 
                     <tr className='p-3'>
                       <td>
-                        <Link to={ `/orders/preview/${ data._id }` }>{ data._id }</Link>
+                        {/* { index + (indexOfFirstPage + 1) } */ } { data.invoiceid }
                       </td>
                       <td>
                         <div className='d-flex justify-content-left align-items-center'>
@@ -101,16 +109,16 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
                           </div>
                         </div>
                       </td>
-                      <td>{ value.name }</td>
-                      <td> {value.quantity} </td>
-                      <td>{value.price}</td>
+                      <td>{ data.name }</td>
+                      <td> { data.quantity } </td>
+                      <td>{ data.price }</td>
                       <td>
                         <div className='column-action d-flex align-items-center'>
                           <AiOutlineCloudDownload size={ 19 } id={ `send-tooltip-5036` } />
                           <UncontrolledTooltip placement='top' target={ `send-tooltip-5036` }>
                             Download
                           </UncontrolledTooltip>
-                          <Link to={ {pathname :"/orders/preview/${data._id}", state : {order : [data]} } }className="text-dark" id={ `pw-tooltip-5036` }>
+                          <Link to={ { pathname: "/orders/preview/${data._id}", state: { order: [data] } } } className="text-dark" id={ `pw-tooltip-5036` }>
                             <Eye size={ 19 } className='mx-1' />
                           </Link>
                           <UncontrolledTooltip placement='top' target={ `pw-tooltip-5036` }>
@@ -125,12 +133,10 @@ const orderTable = ({ handleFilter, value, handleStatusValue, statusValue, handl
                     </tr>
                   )
                 })
-                  )
-                })
               }
             </tbody>
           </Table>
-          <Pagination />
+          <Pagination dataPerPage={ dataPerPage } currentPage={ currentPage } Paginate={ Paginate } totalPages={ totalPages } />
         </div>
       </CardBody>
     </Card>

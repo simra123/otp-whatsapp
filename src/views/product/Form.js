@@ -8,8 +8,8 @@ import { Editor } from "react-draft-wysiwyg"
 import "../../@core/scss/react/libs/editor/editor.scss"
 import "../../@core/scss/react/libs/file-uploader/file-uploader.scss"
 import "uppy/dist/uppy.css"
-import { selectThemeColors } from "@utils"
 import Select from "react-select"
+import { MultiSelect } from "react-multi-select-component"
 import { MdOutlineProductionQuantityLimits } from "react-icons/md"
 import { AiOutlineNumber } from "react-icons/ai"
 import { SuccessToast, ErrorToast } from '../components/toastify'
@@ -35,36 +35,11 @@ import {
 import { FaDollarSign } from "react-icons/fa"
 import Action from "../../middleware/API"
 
-// {
-//   name: "gel hydroalcoolique pour les mains",
-//   color: [
-//       {
-//           name: "Bleue",
-//           code: "cyan"
-//       }
-//   ],
-//   size: [
-//       {
-//           "length": [
-//               "medium",
-//               "Long"
-//           ]
-//       }
-//   ],
-//   image: [imgs],
-//   price: 105,
-//   description: "Dans l'édition et la conception graphique, Lorem ipsum est un texte d'espace réservé couramment utilisé pour démontrer la forme visuelle d'un document ou d'une police de caractères sans s'appuyer sur un contenu significatif. Lorem ipsum peut être utilisé comme espace réservé avant que la copie finale ne soit disponible.",
-//   quantity: 10,
-//   SKU: "32423423",
-// },
-
-
 const ProductForm = (props) => {
 
   //  file Uploader
   const [imgs, setImgs] = useState([])
   //text editor
-  const [value, setValue] = useState(EditorState.createEmpty())
   const history = useHistory()
 
 
@@ -87,11 +62,10 @@ const ProductForm = (props) => {
     arrImg.push(file.data)
     setImgs([...arrImg])
   })
-  console.log(imgs)
 
   const renderPreview = () => {
     if (previewArr.length) {
-      return previewArr.map((src, index) => <img key={index} className='rounded mt-2 mr-1' src={src} alt='avatar' />)
+      return previewArr.map((src, index) => <img key={ index } className='rounded mt-2 mr-1' src={ src } alt='avatar' />)
     } else {
       return null
     }
@@ -101,23 +75,24 @@ const ProductForm = (props) => {
   const [colors, setcolors] = useState([])
   const [attribute, setattribute] = useState([])
   const [values, setvalues] = useState([])
+  const [selectedColors, setSelectedColors] = useState([])
+  const [selectedSizes, setSelectedSizes] = useState([])
   const [para, setPara] = useState(EditorState.createEmpty())
+  const [loading, setLoading] = useState(false)
 
   const [body, setbody] = useState({
     name: "",
-    minQuantity: 0,
+    minQuantity: null,
     category: {},
     colors: [],
-    price: 0,
-    quantity: 0,
+    price: null,
+    quantity: null,
     SKU: "",
     attribute: "",
-    value: ""
+    value: []
   })
-
   async function fetchcategorydata() {
     const response = await Action.get("/category", {})
-    console.log(response.data)
     if (response.data.success === true) {
       response.data.data.map((item, index) => {
         response.data.data[index].value = item.text
@@ -134,7 +109,7 @@ const ProductForm = (props) => {
 
     if (response.data.success === true) {
       response.data.data.map((item, index) => {
-        response.data.data[index].value = item.color
+        response.data.data[index].value = item.code
         response.data.data[index].label = item.color
       })
 
@@ -158,7 +133,7 @@ const ProductForm = (props) => {
   }
 
   const fetchvalues = async (id) => {
-    const response = await Action.get(`/attribute/value?attribute=${id}`, {})
+    const response = await Action.get(`/attribute/value?attribute=${ id }`, {})
 
     if (response.data.success === true) {
       response.data.data.map((item, index) => {
@@ -171,92 +146,61 @@ const ProductForm = (props) => {
     }
   }
   useEffect(async () => {
-    console.log(props.location)
-    if (props.location) {
-
-      // const v = props.location.state.value
-      // setbody(...body, { name: v.name })
-      // setbody(...body, { minQuantity: v?.quantity })
-      // setbody(...body, { category: v.category })
-      // setbody(...body, { colors: v.color })
-      // setbody(...body, { price: v.price })
-      // setbody(...body, { quantity: v.quantity })
-      // setbody(...body, { SKU: v.SKU })
-      // setbody(...body, { attribute: Object.keys(v.size) })
-      // setbody(...body, { value: Object.values(v.size) })
-      // console.log(body)
-    }
     fetchcategorydata()
     fetchcolor()
     fetchattribute()
 
   }, [])
-  const data = new FormData()
-  // data.append('name', 'body.name')
-  // data.append('quantity', 'body.minQuantity')
-  // imgs.map((file, index) => {
-  //   data.append('file', 'keucpoweufweofioweio')
 
-  // })
-  // data.append('category', 'body.category')
-  // colors.map((color, index) => {
-  //   data.append('color', color)
-  //   console.log(color)
-  // })
-  // data.append('price', 'body.price')
-  // data.append('description', 'body.quantity')
-  // data.append('SKU', 'body.SKU')
-  // data.append('size', {
-  //   length: ["moyenne"]
-  // })
-  data.append('name', 'body.name')
-  //data.append('file', '[]')
-  //data.append('file', imgs[0])
-  data.append('category', 'body.category')
-  data.append('color', '[{"name":"Blue","code":"#FFFFFF"}]')
-  data.append('price', ' body.price')
-  data.append('quantity', ' body.quantity')
-  data.append('SKU', 'body.SKU')
-  data.append('description', 'paraToHtml')
-  data.append('size', '[{"length":["medium","medium"]},{"length":"medium"}]')
-  console.log(imgs[0])
+
+  const allSizes = []
+  if (selectedSizes.length) {
+    selectedSizes.map((val) => {
+      allSizes.push(val.value)
+    })
+
+  }
   const paraToHtml = stateToHTML(para.getCurrentContent())
-  const submit = async () => {
-    const size = {}
-    size[body.attribute] = body.value
-    console.log(size)
-    const data = new FormData()
+  const size = {}
+  size[body.attribute] = allSizes
+  const data = new FormData()
+
+  //post function
+  const submit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+
+    if (selectedColors) {
+      selectedColors.map((val) => {
+        delete val.value
+        delete val.label
+        delete val._id
+        delete val.createdAt
+        delete val.updatedAt
+      })
+    }
     data.append('name', body.name)
-    console.log(data)
-    console.log(img)
-    console.log(previewArr)
     data.append('minQuantity', body.minQuantity)
-    data.append('file', imgs)
+    imgs.map((image) => {
+      data.append('file', image)
+    })
     data.append('category', body.category._id)
-    data.append('color', JSON.stringify(body.colors))
+    data.append('color', JSON.stringify(selectedColors))
     data.append('price', body.price)
     data.append('quantity', body.quantity)
     data.append('SKU', body.SKU)
     data.append('comments', paraToHtml)
     data.append('size', JSON.stringify(size))
-    console.log(data)
     const response = await Action.post(`/product`, data, {})
-    // if (response.data.success === true) {
-    //   toast.success(
-    //     <SuccessToast title="Success" text="Category added Successfully!" />
-    //   )
-
-    //   history.push("/product/list")
-    // } else {
-    //   toast.error(
-    //     <ErrorToast
-    //       title="error"
-    //       text="Something went wrong, try again later"
-    //     />
-    //   )
-    // }
+    console.log(response)
+    if (response.data.success) {
+      toast.success(<SuccessToast title="Success" text="Product added Successfully!" />)
+      history.push('/product/list')
+    } else {
+      setLoading(false)
+      toast.error(<ErrorToast title="error" text={ response.data.message } />)
+    }
   }
-  console.log(body)
   return (
     <Card>
       <CardHeader>
@@ -266,42 +210,42 @@ const ProductForm = (props) => {
         <Form>
           <Row>
             <Col sm="12" md="6">
-              {/*product form */}
+              {/*product form */ }
               <Label for="pro-name">Product Name</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <MdOutlineProductionQuantityLimits size={15} />
+                    <MdOutlineProductionQuantityLimits size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="text"
-                  value={body.name}
+                  value={ body.name }
                   id="pro-name"
                   placeholder="Enter your product Name"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, name: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" md="6">
-              {/*product form */}
+              {/*product form */ }
               <Label for="quantity">Minimum Purchase Quatity</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <AiOutlineNumber size={15} />
+                    <AiOutlineNumber size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="number"
                   id="quantity"
                   placeholder="Enter your quantity"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, minQuantity: e.target.value })
-                  }}
-                  value={body.minQuantity}
+                  } }
+                  value={ body.minQuantity }
                 />
               </InputGroup>
             </Col>
@@ -310,18 +254,16 @@ const ProductForm = (props) => {
               <Label>Categories</Label>
 
               <Select
-                theme={selectThemeColors}
                 className="react-select"
                 classNamePrefix="select"
-                defaultValue={category[0]}
-                onChange={(e) => {
-                  console.log(e)
+                defaultValue={ category[0] }
+                onChange={ (e) => {
                   setbody({ ...body, category: e })
 
-                }}
+                } }
 
-                options={category}
-                isClearable={false}
+                options={ category }
+                isClearable={ false }
               />
             </Col>
           </Row>
@@ -329,31 +271,8 @@ const ProductForm = (props) => {
           <h4 className="py-2">Product Images</h4>
 
           <Row className="mb-2">
-            {/* <Col sm="12">
-
-            <h6>Thumbnail Image (300x300)</h6>
-            <small>
-              This image is visible in all product box. Use 300x300 sizes
-              image. Keep some blank space around main object of your image as
-              we had to crop some edge in different devices to make it
-              responsive.
-            </small>
-            <div className="mt-2">
-              <DragDrop uppy={ uppy } />
-              { img !== null ? (
-                <img
-                  className="rounded mt-2"
-                  // src={body.image ? (baseURL + body.image) : img}
-                  src={ img }
-                  alt="avatar"
-                  height="100"
-                  width="100"
-                />
-              ) : null }
-            </div>
-          </Col> */}
             <Col sm="12" className="mt-1">
-              {/* basic image upload */}
+              {/* basic image upload */ }
 
               <h6>Gallery Images (600x600)</h6>
               <small className="pb-2">
@@ -366,8 +285,8 @@ const ProductForm = (props) => {
                     <CardTitle tag='h4'> Multiple Files Upload</CardTitle>
                   </CardHeader>
                   <CardBody>
-                    <DragDrop uppy={uppy} />
-                    {renderPreview()}
+                    <DragDrop uppy={ uppy } />
+                    { renderPreview() }
                   </CardBody>
                 </Card>
               </div>
@@ -377,26 +296,11 @@ const ProductForm = (props) => {
           <Row>
             <Col className="mb-1" md="12" sm="12">
               <Label>Colors</Label>
-              <Select
-                theme={selectThemeColors}
-                className="react-select"
-                classNamePrefix="select"
-                defaultValue={colors[0]}
-                options={colors}
-                onChange={(e) => {
-                  if (body.colors.indexOf(e.value) === -1) {
-                    const color = body.colors
-                    color.push(e.value)
-                    setbody({ ...body, colors: color })
-                  } else {
-                    const color = body.colors
-                    color.splice(color.indexOf(e.value), 1)
-                    setbody({ ...body, colors: color })
-                  }
-                  // setbody({ ...body, colors: e.value })
-                }}
-                isClearable={false}
-                multiple
+              <MultiSelect
+                options={ colors }
+                value={ selectedColors }
+                onChange={ setSelectedColors }
+                labelledBy="Select"
               />
             </Col>
           </Row>
@@ -405,88 +309,83 @@ const ProductForm = (props) => {
             <Col className="mb-1" md="6" sm="12">
               <Label>Attribute Name</Label>
               <Select
-                theme={selectThemeColors}
                 className="react-select"
                 classNamePrefix="select"
-                defaultValue={attribute[0]}
-                options={attribute}
-                onChange={(e) => {
+                defaultValue={ attribute[0] }
+                options={ attribute }
+                onChange={ (e) => {
                   setbody({ ...body, attribute: e.attribute })
                   fetchvalues(e._id)
-                }}
-                isClearable={false}
+                } }
+                isClearable={ false }
               />
             </Col>
             <Col className="mb-1" md="6" sm="12">
               <Label>Attribute Value</Label>
-              <Select
-                theme={selectThemeColors}
-                className="react-select"
-                classNamePrefix="select"
-                defaultValue={values[0]}
-                options={values}
-                onChange={(e) => {
-                  setbody({ ...body, value: e.value })
-                }}
-                isClearable={false}
+              <MultiSelect
+                options={ values }
+                value={ selectedSizes }
+                onChange={ setSelectedSizes }
+                labelledBy="Select"
               />
+
             </Col>
             <Col sm="12" md="6">
-              {/*att form */}
+              {/*att form */ }
               <Label for="Unitprice">Unit price</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <FaDollarSign size={15} />
+                    <FaDollarSign size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="number"
                   id="UnitPrice"
                   placeholder="Unit Price"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, price: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" md="6">
-              {/*att form */}
+              {/*att form */ }
               <Label for="quantity">Quatity</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <InputGroupAddon addonType="prepend">
                   <InputGroupText>
-                    <AiOutlineNumber size={15} />
+                    <AiOutlineNumber size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
                 <Input
                   type="number"
                   id="quantity"
                   placeholder="Enter your quantity"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, quantity: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" md="6">
-              {/*product form */}
+              {/*product form */ }
               <Label for="sku">SKU</Label>
-              <InputGroup className="input-group-merge" tag={FormGroup}>
+              <InputGroup className="input-group-merge" tag={ FormGroup }>
                 <Input
                   type="text"
                   id="sku"
                   placeholder="Enter your SKU"
-                  onChange={(e) => {
+                  onChange={ (e) => {
                     setbody({ ...body, SKU: e.target.value })
-                  }}
+                  } }
                 />
               </InputGroup>
             </Col>
             <Col sm="12" className="mt-2">
-              {/* text editor */}
+              {/* text editor */ }
               <h6>Product Description</h6>
-              <Editor editorState={para} onEditorStateChange={data => setPara(data)} />
+              <Editor editorState={ para } onEditorStateChange={ data => setPara(data) } />
 
 
             </Col>
@@ -497,15 +396,13 @@ const ProductForm = (props) => {
                   className="mr-1"
                   color="primary"
                   type="submit"
-                  onClick={(e) => {
-                    e.preventDefault()
-                    submit()
-                  }}
+                  onClick={ (e) => {
+                    submit(e)
+                  } }
                 >
                   Submit
-                  {/* spinner */}
-                  {/* <Spinner color='light' /> */}
                 </Button.Ripple>
+                { loading ? <Spinner color='primary' /> : null }
               </FormGroup>
             </Col>
           </Row>

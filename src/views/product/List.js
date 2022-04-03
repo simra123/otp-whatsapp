@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../../@core/scss/react/libs/file-uploader/file-uploader.scss'
 import 'uppy/dist/uppy.css'
+import Pagination from '@src/views/components/pagination/PaginationBasic'
 import { MoreVertical, Edit, Trash, User } from 'react-feather'
 import Action from '../../middleware/API'
 import baseURL from '../../middleware/BaseURL'
@@ -47,7 +48,17 @@ const Banner = () => {
       toast.error(<ErrorToast title="error" text={ res.data.message } />)
     }
   }
+  const [currentPage, setCurrentPage] = useState(1)
+  const [dataPerPage, setDataPerPage] = useState(3)
+  //setting pages into the pagination
+  const indexOfLastPage = currentPage * dataPerPage//5
+  const indexOfFirstPage = indexOfLastPage - dataPerPage //0
 
+  const currentData = products.slice(indexOfFirstPage, indexOfLastPage)
+  const totalPages = products.length //15
+
+  //change pages onclick 
+  const Paginate = (pageNumber) => { setCurrentPage(pageNumber) }
   return (
     <>
       <Card>
@@ -66,11 +77,11 @@ const Banner = () => {
             </thead>
             <tbody>
               {
-                products.map((value, index) => {
+                products.length ? currentData.map((value, index) => {
                   return (
-                    <tr key={ index }>
+                    <tr key={ value._id }>
                       <td>
-                        { index + 1 }
+                        { index + (indexOfFirstPage + 1) }
                       </td>
                       <td>{ value.name }</td>
                       <td> <img className="rounded-circle" src={ baseURL + value?.image[0] } width="80" height="80" alt="" /> </td>
@@ -82,7 +93,7 @@ const Banner = () => {
                             <MoreVertical size={ 15 } />
                           </DropdownToggle>
                           <DropdownMenu right>
-                            <Link to="/product/form">
+                            <Link to={ `/product/edit/${ value._id }` }>
                               <DropdownItem href='/' >
                                 <Edit className='mr-50' size={ 15 } />  <span className='align-middle'>Edit</span>
                               </DropdownItem>
@@ -118,12 +129,12 @@ const Banner = () => {
                       </td>
                     </tr>
                   )
-                })
+                }) : null
               }
-
 
             </tbody>
           </Table>
+          <Pagination dataPerPage={ dataPerPage } currentPage={ currentPage } Paginate={ Paginate } totalPages={ totalPages } />
         </CardBody>
       </Card>
     </>

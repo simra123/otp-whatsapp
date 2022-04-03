@@ -50,9 +50,17 @@ const Banner = () => {
 
   useEffect(() => {
     const getBanner = async () => {
-      const { data } = await Action.get(`/banner/market?lang=french`)
-      setImg(data.data[0])
-      setId(data.data[0]._id)
+      const res = await Action.get(`/banner/market`)
+      console.log(res)
+
+      try {
+        const data = res.data
+        setImg(data.data[0])
+        setId(data.data[0]._id)
+      } catch (error) {
+        console.log(error)
+      }
+
     }
     getBanner()
   }, [hitAPI])
@@ -122,8 +130,8 @@ const Banner = () => {
               </tr>
             </thead>
             <tbody>
-              { img !== null ? <tr>
-                <td>  1</td> <td> <img src={ baseURL + img?.image } width="auto" height="230" alt="" /> </td>
+              { img ? <tr>
+                <td>  1</td> <td> <img src={ ` ${ baseURL }${ img.image } ` } width="auto" height="230" alt="" /> </td>
                 <td>
                   <CustomInput
                     className='custom-control-info'
