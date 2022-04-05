@@ -38,7 +38,6 @@ const EditPage = () => {
     const getData = async () => {
       try {
         const { data } = await Action.get(`/${ url }`)
-        console.log(data.data)
         setValue(EditorState.createWithContent(stateFromHTML(data.data.text)))
         setPageData(data.data)
       } catch (error) {
@@ -80,7 +79,7 @@ const EditPage = () => {
               {/* service form */ }
               <Label for='nameVerticalIcons'>Page Title</Label>
               <InputGroup className='input-group-merge' tag={ FormGroup }>
-                <Input readOnly type='text' name='name' id='nameVerticalIcons' value="About Us" placeholder='Enter your Page Title' />
+                <Input readOnly type='text' id='nameVerticalIcons' value={ pageData.title } placeholder='Enter your Page Title' />
               </InputGroup>
             </Col>
 

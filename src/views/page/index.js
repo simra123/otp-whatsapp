@@ -6,13 +6,13 @@ import { MoreVertical, Edit, Trash, User } from 'react-feather'
 import { Link } from 'react-router-dom'
 
 
-import { Card, Form, Row, Col, Label, InputGroup, FormGroup, InputGroupAddon, InputGroupText, Input, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
+import { Card, CardTitle, CardBody, Table, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle } from 'reactstrap'
 
 const pages = [
   {
     id: 1,
     title: 'About us',
-    url: 'about'
+    url: 'about-page'
   },
   {
     id: 2,
@@ -27,20 +27,6 @@ const pages = [
 
 ]
 const Pages = () => {
-
-
-  const [modal, setModal] = useState(null)
-
-
-  const toggleModalPrimary = id => {
-    if (modal !== id) {
-      setModal(id)
-    } else {
-      setModal(null)
-    }
-  }
-
-
   return (
     <>
       <Card>
