@@ -36,6 +36,7 @@ import {
 import { FaDollarSign } from "react-icons/fa"
 import Action from "../../middleware/API"
 import baseURL from "../../middleware/BaseURL"
+import { string } from "prop-types"
 
 const ProductForm = (props) => {
 
@@ -100,7 +101,6 @@ const ProductForm = (props) => {
         const { data } = await Action.get(`/product?_id=${ id }`)
         const res = data.data[0]
         setImgs(res.image)
-        console.log(res.image)
 
         setbody({
             name: res.name,
@@ -217,7 +217,6 @@ const ProductForm = (props) => {
             toast.error(<ErrorToast title="error" text={ response.data.message } />)
         }
     }
-    console.log(imgs)
     return (
         <Card>
             <CardHeader>
@@ -301,7 +300,12 @@ const ProductForm = (props) => {
                                     </CardHeader>
                                     <CardBody>
                                         <DragDrop uppy={ uppy } />
-                                        { renderPreview() }
+                                        { previewArr.length ? previewArr.map((src, index) => {
+                                            return (<img key={ index } className='rounded mt-2 mr-1' src={ src } alt='avatar' />)
+                                        }) : null }
+                                        { imgs.length ? imgs.map((src, index) => {
+                                            return (<img key={ index } className={ typeof src !== 'object' ? 'rounded mt-2 mr-1' : 'd-none' } height={ 140 } width={ 'auto' } src={ baseURL + src } alt='avatar' />)
+                                        }) : null }
                                     </CardBody>
                                 </Card>
                             </div>

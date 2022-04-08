@@ -134,7 +134,9 @@ const Banner = () => {
 
             </tbody>
           </Table>
-          <Pagination dataPerPage={ dataPerPage } currentPage={ currentPage } Paginate={ Paginate } totalPages={ totalPages } />
+          {
+            totalPages > dataPerPage ? <Pagination dataPerPage={ dataPerPage } currentPage={ currentPage } Paginate={ Paginate } totalPages={ totalPages } /> : null
+          }
         </CardBody>
       </Card>
     </>

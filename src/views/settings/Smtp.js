@@ -68,13 +68,12 @@ const GeneralSettings = () => {
   const UpdateSmpt = async (e) => {
     e.preventDefault()
     const res = await Action.put(`/smtp/${ id }`, smtp, {})
-    console.log(res)
+    setLoading(true)
     if (res.data.data.acknowledged) {
-      setLoading(true)
       setTimeout(() => {
         toast.success(<SuccessToast title="Success" text="Smtp settings updated Successfully!" />)
         setLoading(false)
-      }, 2000)
+      }, 1000)
 
     } else {
       setLoading(false)

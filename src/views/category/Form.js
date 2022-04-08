@@ -77,13 +77,13 @@ const CategoryForm = () => {
     //post api
     console.log(data)
     const postCategory = async (e) => {
+        setSuccess(true)
+
         e.preventDefault()
         const res = await Action.post("/category", data)
-        
+
         if (res.data.success) {
-            toast.success(<SuccessToast title="Success" text="Category added Successfully!" />)
             history.push('/category/list')
-            setSuccess(true)
 
         } else {
             console.log(error)

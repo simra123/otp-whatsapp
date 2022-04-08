@@ -16,7 +16,7 @@ const Header = () => {
   const [loading, setloading] = useState(false)
   const [body, setBody] = useState({
     text: "",
-    file: [],
+    file: {},
     button_text: "",
     link: ""
   })
@@ -50,18 +50,24 @@ const Header = () => {
 
   useEffect(async () => {
     fetchTopHeaderData()
-  }, [])
+  }, [modal2])
 
   //UPDATE DATA 
-
+  const data = new FormData()
+  data.append('text', body.text)
+  data.append('button_text', body.button_text)
+  data.append('file', body.file)
   async function updateHeader() {
     setloading(true)
-    const res = await Action.put(`/topheader/${ topHeader[0]._id }`, body, {})
+    const res = await Action.put(`/topheader/${ topHeader[0]._id }`, data, {})
     if (res.data.success === true) {
       toast.success(<SuccessToast title="Success" text="Top Header updated Successfully!" />)
       setModal2(null)
+      setloading(false)
     } else {
       toast.error(<ErrorToast title="error" text={ res.data.message } />)
+      setloading(false)
+
 
     }
   }

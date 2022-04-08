@@ -28,65 +28,62 @@ import {
   Activity,
   AlertOctagon
 } from 'react-feather'
-import {BiCategory} from 'react-icons/bi'
-import {MdProductionQuantityLimits, MdStarBorder} from 'react-icons/md'
-import {BsFillBookmarkStarFill} from 'react-icons/bs'
-import {GrUserManager} from 'react-icons/gr'
-import {RiUserStarFill} from 'react-icons/ri'
+import { BiCategory } from 'react-icons/bi'
+import { BsFillBookmarkStarFill } from 'react-icons/bs'
+import { GrUserManager } from 'react-icons/gr'
+import { RiUserStarFill } from 'react-icons/ri'
 const EcommerceDashboard = () => {
-  const { colors } = useContext(ThemeColors),
-    trackBgColor = '#e9ecef'
 
   return (
     <div id='dashboard-ecommerce'>
-       <Row>
-        {/* Stats With Icons */}
+      <Row>
+        {/* Stats With Icons */ }
         <Col xl='3' md='4' sm='6'>
-          <StatsVertical icon={<BsFillBookmarkStarFill size={21} />} color='info' stats='36.9k' statTitle='Bookings' />
+          <StatsVertical icon={ <BsFillBookmarkStarFill size={ 21 } /> } color='info' stats='36.9k' statTitle='Bookings' />
         </Col>
         <Col xl='3' md='4' sm='6'>
-          <StatsVertical icon={< ShoppingBag size={21} />} color='danger' stats='97.8k' statTitle='Orders' />
+          <StatsVertical icon={ < ShoppingBag size={ 21 } /> } color='danger' stats='97.8k' statTitle='Orders' />
         </Col>
         <Col xl='3' md='4' sm='6'>
-          <StatsVertical icon={<GrUserManager size={21} />} color='warning' stats='12k' statTitle='Customers' />
+          <StatsVertical icon={ <GrUserManager size={ 21 } /> } color='warning' stats='12k' statTitle='Customers' />
         </Col>
-       
+
         <Col xl='3' md='4' sm='6'>
-          <StatsVertical icon={<RiUserStarFill size={21} />} color='primary' stats='26.8' statTitle='Employees' />
-        </Col>
-        <Col xl='3' md='4' sm='6'>
-          <StatsVertical icon={<Award size={21} />} color='danger' stats='2.1k' statTitle='Services' />
+          <StatsVertical icon={ <RiUserStarFill size={ 21 } /> } color='primary' stats='26.8' statTitle='Employees' />
         </Col>
         <Col xl='3' md='4' sm='6'>
-          <StatsVertical icon={<BiCategory size={21} />} color='success' stats='689' statTitle='Categories' />
+          <StatsVertical icon={ <Award size={ 21 } /> } color='danger' stats='2.1k' statTitle='Services' />
         </Col>
-        
-        {/* Stats With Icons */}
+        <Col xl='3' md='4' sm='6'>
+          <StatsVertical icon={ <BiCategory size={ 21 } /> } color='success' stats='689' statTitle='Categories' />
+        </Col>
+
+        {/* Stats With Icons */ }
       </Row>
-      <Row className='match-height'>
+      {/* <Row className='match-height'>
         <Col xl='4' md='6' xs='12'>
           <CardMedal />
         </Col>
         <Col xl='8' md='6' xs='12'>
-          <StatsCard cols={{ xl: '3', sm: '6' }} />
+          <StatsCard cols={ { xl: '3', sm: '6' } } />
         </Col>
       </Row>
       <Row className='match-height'>
         <Col lg='4' md='12'>
           <Row className='match-height'>
             <Col lg='6' md='3' xs='6'>
-              <OrdersBarChart warning={colors.warning.main} />
+              <OrdersBarChart warning={ colors.warning.main } />
             </Col>
             <Col lg='6' md='3' xs='6'>
-              <ProfitLineChart info={colors.info.main} />
+              <ProfitLineChart info={ colors.info.main } />
             </Col>
             <Col lg='12' md='6' xs='12'>
-              <Earnings success={colors.success.main} />
+              <Earnings success={ colors.success.main } />
             </Col>
           </Row>
         </Col>
         <Col lg='8' md='12'>
-          <RevenueReport primary={colors.primary.main} warning={colors.warning.main} />
+          <RevenueReport primary={ colors.primary.main } warning={ colors.warning.main } />
         </Col>
       </Row>
       <Row className='match-height'>
@@ -97,15 +94,15 @@ const EcommerceDashboard = () => {
           <CardMeetup />
         </Col>
         <Col lg='4' md='6' xs='12'>
-          <CardBrowserStates colors={colors} trackBgColor={trackBgColor} />
+          <CardBrowserStates colors={ colors } trackBgColor={ trackBgColor } />
         </Col>
         <Col lg='4' md='6' xs='12'>
-          <GoalOverview success={colors.success.main} />
+          <GoalOverview success={ colors.success.main } />
         </Col>
         <Col lg='4' md='6' xs='12'>
           <CardTransactions />
         </Col>
-      </Row>
+      </Row> */}
     </div>
   )
 }

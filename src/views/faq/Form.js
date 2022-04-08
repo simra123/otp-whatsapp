@@ -46,14 +46,12 @@ const FAQForm = () => {
 
   //post faq 
   const postFAQ = async (e) => {
+    setLoading(true)
     e.preventDefault()
     const res = await Action.post('/faq', data, {})
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Faq updated Successfully!" />)
-      setLoading(true)
-      setTimeout(() => {
-        history.push('/faq/list')
-      }, 1000)
+      history.push('/faq/list')
 
     } else {
       console.log(res)

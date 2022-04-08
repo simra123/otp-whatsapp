@@ -210,7 +210,7 @@ const DesktopBanner = () => {
                         { index + 1 }
                       </td>
 
-                      <td> <img src={ baseURL + value.image } width="100" height="100" alt="" /> </td>
+                      <td> <img src={ baseURL + value.image } width="auto" height="200" alt="" /> </td>
                       <td>
                         <UncontrolledDropdown>
                           <DropdownToggle className='icon-btn hide-arrow' color='transparent' size='sm' caret>

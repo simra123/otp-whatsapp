@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import Action from '../../middleware/API'
+import Pagination from '@src/views/components/pagination/PaginationBasic'
 //import toast types from components
 import { SuccessToast, ErrorToast } from '../components/toastify'
 //import toasts from react
@@ -41,6 +42,17 @@ const CustomerTable = () => {
 
     }
   }
+  const [currentPage, setCurrentPage] = useState(1)
+  const [dataPerPage, setDataPerPage] = useState(5)
+  //setting pages into the pagination
+  const indexOfLastPage = currentPage * dataPerPage//5
+  const indexOfFirstPage = indexOfLastPage - dataPerPage //0
+
+  const currentData = allCustomers.slice(indexOfFirstPage, indexOfLastPage)
+  const totalPages = allCustomers.length //15
+
+  //change pages onclick 
+  const Paginate = (pageNumber) => { setCurrentPage(pageNumber) }
   return (
     <Card>
       <CardBody>
@@ -57,7 +69,7 @@ const CustomerTable = () => {
           </thead>
           <tbody>
             {
-              allCustomers.map((value, index) => {
+              currentData.map((value, index) => {
                 return (
                   <tr key={ index }>
                     <td>
@@ -113,6 +125,9 @@ const CustomerTable = () => {
 
           </tbody>
         </Table>
+        {
+          totalPages > dataPerPage ? <Pagination dataPerPage={ dataPerPage } currentPage={ currentPage } Paginate={ Paginate } totalPages={ totalPages } /> : null
+        }
       </CardBody>
     </Card>
   )

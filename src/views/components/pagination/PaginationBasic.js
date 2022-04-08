@@ -5,7 +5,6 @@ const PaginationBasic = ({ dataPerPage, Paginate, totalPages, currentPage }) => 
   for (let i = 1; i <= Math.ceil(totalPages / dataPerPage); i++) {
     pageNumber.push(i)
   }
-  console.log(pageNumber)
   return (
     <Pagination className='d-flex mt-3 mr-2 justify-content-end'>
       { pageNumber.length ? pageNumber.map((number, index) => {

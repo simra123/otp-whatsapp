@@ -7,6 +7,7 @@ import Action from '../../middleware/API'
 import '../../@core/scss/react/libs/editor/editor.scss'
 import '../../@core/scss/react/libs/file-uploader/file-uploader.scss'
 import 'uppy/dist/uppy.css'
+import userDefault from '@src/assets/images/avatardefault.png'
 import {
   Card,
   CardHeader,
@@ -38,7 +39,7 @@ const EmployeeForm = () => {
   const history = useHistory()
   const [loading, setLoading] = useState(false)
   //  file Uploader
-  const [img, setImg] = useState(null)
+  const [img, setImg] = useState(userDefault)
   const [preview, setPreview] = useState(null)
   const [Edetails, setEdetails] = useState({
     name: "",
@@ -214,7 +215,7 @@ const EmployeeForm = () => {
 
               <h6> Employee Image </h6>
               <DragDrop uppy={ uppy } />
-              { img !== null ? <img className='rounded mt-2' src={ preview } alt='avatar' /> : null }
+              { img !== null ? <img className='rounded mt-2' height={ 100 } src={ preview ? preview : userDefault } alt='avatar' /> : null }
             </Col>
 
 

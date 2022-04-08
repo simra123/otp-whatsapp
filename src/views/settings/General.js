@@ -53,7 +53,7 @@ const GeneralSettings = () => {
         const { data } = await Action.get('/setting')
         const res = data.data[0]
         setGeneralData({
-          mobile: res.mobile,
+          mobile: res.Phone,
           email: res.Email,
           address: res.Address,
           website: res.website_name,
@@ -94,21 +94,21 @@ const GeneralSettings = () => {
   newData.append('twitter', generalData.twitter)
   newData.append('linkedin', generalData.linkedin)
   newData.append('Address', generalData.address)
-  newData.append('Phone', generalData.phone)
+  newData.append('Phone', Number(generalData.mobile))
   newData.append('Email', generalData.email)
   newData.append('file', header)
   newData.append('file', footer)
 
   const updateSettings = async (e) => {
     e.preventDefault()
+    setSuccess(true)
     const res = await Action.put(`/setting/${ id }`, newData, {})
     console.log(res)
     if (res.data.success) {
-      setSuccess(true)
       setTimeout(() => {
         toast.success(<SuccessToast title="Success" text="settings updated Successfully!" />)
         setSuccess(false)
-      }, 2000)
+      }, 1000)
     } else {
       setSuccess(false)
       toast.error(<ErrorToast title="error" text={ res.data.message } />)

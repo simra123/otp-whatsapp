@@ -35,7 +35,8 @@ import {
 import { FaDollarSign } from "react-icons/fa"
 import Action from "../../middleware/API"
 
-const ProductForm = (props) => {
+const ProductForm = () => {
+  const [sizeError, setSizeError] = useState('')
 
   //  file Uploader
   const [imgs, setImgs] = useState([])
@@ -61,6 +62,13 @@ const ProductForm = (props) => {
     const arrImg = imgs
     arrImg.push(file.data)
     setImgs([...arrImg])
+    //get file size and convert in kbs
+    const fileSize = file.data.size * 0.001
+    if (fileSize > 750) {
+      setSizeError('file size below 750Kb is recommended!')
+    } else {
+      setSizeError('')
+    }
   })
 
   const renderPreview = () => {
@@ -180,11 +188,11 @@ const ProductForm = (props) => {
       })
     }
     data.append('name', body.name)
-    data.append('minQuantity', body.minQuantity)
+    data.append('minQuantity', Number(body.minQuantity))
     imgs.map((image) => {
       data.append('file', image)
     })
-    data.append('category', body.category._id)
+    data.append('category', body.category.value)
     data.append('color', JSON.stringify(selectedColors))
     data.append('price', body.price)
     data.append('quantity', body.quantity)
@@ -283,9 +291,12 @@ const ProductForm = (props) => {
                 <Card>
                   <CardHeader>
                     <CardTitle tag='h4'> Multiple Files Upload</CardTitle>
+
                   </CardHeader>
                   <CardBody>
                     <DragDrop uppy={ uppy } />
+                    <p className="text-danger m-0">{ sizeError } </p>
+
                     { renderPreview() }
                   </CardBody>
                 </Card>
