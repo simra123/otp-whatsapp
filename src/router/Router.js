@@ -91,13 +91,13 @@ const Router = () => {
       // ** If route has meta and authRole and user is Logged in then redirect user to home page (DefaultRoute)
       return <Redirect to='/' />
     } else if (isUserLoggedIn() && !ability.can(action || 'read', resource)) {
-      console.log(ability)  
+      console.log(ability)
       console.log(isUserLoggedIn())
       // ** If user is Logged in and doesn't have ability to visit the page redirect the user to Not Authorized
       return <Redirect to='/misc/not-authorized' />
     } else {
       // ** If none of the above render component
-      return <route.component {...props} />
+      return <route.component { ...props } />
     }
   }
 
@@ -121,23 +121,23 @@ const Router = () => {
       const routerProps = {}
 
       return (
-        <Route path={LayoutPaths} key={index}>
+        <Route path={ LayoutPaths } key={ index }>
           <LayoutTag
-            routerProps={routerProps}
-            layout={layout}
-            setLayout={setLayout}
-            transition={transition}
-            setTransition={setTransition}
-            currentActiveItem={currentActiveItem}
+            routerProps={ routerProps }
+            layout={ layout }
+            setLayout={ setLayout }
+            transition={ transition }
+            setTransition={ setTransition }
+            currentActiveItem={ currentActiveItem }
           >
             <Switch>
-              {LayoutRoutes.map(route => {
+              { LayoutRoutes.map(route => {
                 return (
                   <Route
-                    key={route.path}
-                    path={route.path}
-                    exact={route.exact === true}
-                    render={props => {
+                    key={ route.path }
+                    path={ route.path }
+                    exact={ route.exact === true }
+                    render={ props => {
                       // ** Assign props to routerProps
                       Object.assign(routerProps, {
                         ...props,
@@ -145,39 +145,39 @@ const Router = () => {
                       })
 
                       return (
-                        <Suspense fallback={null}>
-                          {/* Layout Wrapper to add classes based on route's layout, appLayout and className */}
+                        <Suspense fallback={ null }>
+                          {/* Layout Wrapper to add classes based on route's layout, appLayout and className */ }
                           <LayoutWrapper
-                            layout={DefaultLayout}
-                            transition={transition}
-                            setTransition={setTransition}
+                            layout={ DefaultLayout }
+                            transition={ transition }
+                            setTransition={ setTransition }
                             /* Conditional props */
                             /*eslint-disable */
-                            {...(route.appLayout
+                            { ...(route.appLayout
                               ? {
-                                  appLayout: route.appLayout
-                                }
-                              : {})}
-                            {...(route.meta
+                                appLayout: route.appLayout
+                              }
+                              : {}) }
+                            { ...(route.meta
                               ? {
-                                  routeMeta: route.meta
-                                }
-                              : {})}
-                            {...(route.className
+                                routeMeta: route.meta
+                              }
+                              : {}) }
+                            { ...(route.className
                               ? {
-                                  wrapperClass: route.className
-                                }
-                              : {})}
-                            /*eslint-enable */
+                                wrapperClass: route.className
+                              }
+                              : {}) }
+                          /*eslint-enable */
                           >
-                            <FinalRoute route={route} {...props} />
+                            <FinalRoute route={ route } { ...props } />
                           </LayoutWrapper>
                         </Suspense>
                       )
-                    }}
+                    } }
                   />
                 )
-              })}
+              }) }
             </Switch>
           </LayoutTag>
         </Route>
@@ -186,30 +186,30 @@ const Router = () => {
   }
 
   return (
-    <AppRouter basename={process.env.REACT_APP_BASENAME}>
+    <AppRouter basename={ process.env.REACT_APP_BASENAME }>
       <Switch>
-        {/* If user is logged in Redirect user to DefaultRoute else to login */}
+        {/* If user is logged in Redirect user to DefaultRoute else to login */ }
         <Route
           exact
           path='/'
-          render={() => {
-            return isUserLoggedIn() ? <Redirect to={DefaultRoute} /> : <Redirect to='/login' />
-          }}
+          render={ () => {
+            return isUserLoggedIn() ? <Redirect to={ DefaultRoute } /> : <Redirect to='/login' />
+          } }
         />
-        {/* Not Auth Route */}
+        {/* Not Auth Route */ }
         <Route
           exact
           path='/misc/not-authorized'
-          render={props => (
+          render={ props => (
             <Layouts.BlankLayout>
               <NotAuthorized />
             </Layouts.BlankLayout>
-          )}
+          ) }
         />
-        {ResolveRoutes()}
+        { ResolveRoutes() }
 
-        {/* NotFound Error page */}
-        <Route path='*' component={Error} />
+        {/* NotFound Error page */ }
+        <Route path='*' component={ Error } />
       </Switch>
     </AppRouter>
   )

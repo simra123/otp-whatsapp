@@ -159,7 +159,7 @@ const orderTable = () => {
                             <UncontrolledTooltip placement='top' target={ `send-tooltip-5036` }>
                               Download
                             </UncontrolledTooltip>
-                            <Link to={ { pathname: "/orders/preview/${data._id}", state: { order: [data] } } } className="text-dark" id={ `pw-tooltip-5036` }>
+                            <Link to={ `/orders/preview/${ data._id }` } className="text-dark" id={ `pw-tooltip-5036` }>
                               <Eye size={ 19 } className='mx-1' />
                             </Link>
                             <UncontrolledTooltip placement='top' target={ `pw-tooltip-5036` }>

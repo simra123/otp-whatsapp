@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
+import baseUrl from '../../../../middleware/BaseURL'
 // ** Custom Components
 import Avatar from '@components/avatar'
 
@@ -39,20 +40,23 @@ const UserDropdown = () => {
 
   return (
     <UncontrolledDropdown tag='li' className='dropdown-user nav-item'>
-      <DropdownToggle href='/' tag='a' className='nav-link dropdown-user-link' onClick={e => e.preventDefault()}>
+      <DropdownToggle href='/' tag='a' className='nav-link dropdown-user-link' onClick={ e => e.preventDefault() }>
         <div className='user-nav d-sm-flex d-none'>
-          <span className='user-name font-weight-bold'>{(userData && userData['name']) || 'John Doe'}</span>
-          <span className='user-status'>{(userData && userData.usertype === 1) ? "Admin" : "client"}</span>
+          <span className='user-name font-weight-bold'>{ (userData?.data.name) || 'User' }</span>
+          <span className='user-status'>{ (userData?.data.usertype) || 'no role' }</span>
         </div>
-        <Avatar img={defaultAvatar} imgHeight='40' imgWidth='40' status='online' />
+        { userData?.data.image ? <Avatar img={ baseUrl + userData.data.image } imgHeight='40' imgWidth='40' status='online' /> : <div className='rounded-circle bg-info mr-1 text-center ' style={ { height: "40px", width: "40px", fontWeight: "600", fontSize: "18px", paddingTop: "11px" } }>
+          <span className='text-white text-xs font-bold text-capitalize '> { userData?.data.name.slice(0, 1) } </span>
+        </div> }
       </DropdownToggle>
       <DropdownMenu right>
-        <DropdownItem tag={Link} to='/account-settings'>
-          <User size={14} className='mr-75' />
+        <DropdownItem tag={ Link } to='/account-settings'>
+          <User size={ 14 } className='mr-75' />
           <span className='align-middle'>Profile</span>
         </DropdownItem>
         {/* <DropdownItem tag={Link} to='/apps/email'>
           <Mail size={14} className='mr-75' />
+          
           <span className='align-middle'>Inbox</span>
         </DropdownItem>
         <DropdownItem tag={Link} to='/apps/todo'>
@@ -76,8 +80,8 @@ const UserDropdown = () => {
           <HelpCircle size={14} className='mr-75' />
           <span className='align-middle'>FAQ</span>
         </DropdownItem> */}
-        <DropdownItem tag={Link} to='/login' onClick={() => dispatch(handleLogout())}>
-          <Power size={14} className='mr-75' />
+        <DropdownItem tag={ Link } to='/login' onClick={ () => dispatch(handleLogout()) }>
+          <Power size={ 14 } className='mr-75' />
           <span className='align-middle'>Logout</span>
         </DropdownItem>
       </DropdownMenu>

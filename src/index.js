@@ -1,5 +1,5 @@
 // ** React Imports
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useState } from 'react'
 import ReactDOM from 'react-dom'
 
 // ** Redux Imports
@@ -9,7 +9,7 @@ import { store } from './redux/storeConfig/store'
 // ** Intl, CASL & ThemeColors Context
 import ability from './configs/acl/ability'
 import { ToastContainer } from 'react-toastify'
-import { AbilityContext } from './utility/context/Can'
+import { AbilityContext, DashboardContext } from './utility/context/Can'
 import { ThemeContext } from './utility/context/ThemeColors'
 import { IntlProviderWrapper } from './utility/context/Internationalization'
 
@@ -37,17 +37,13 @@ import '@styles/react/libs/toastify/toastify.scss'
 import './@core/assets/fonts/feather/iconfont.css'
 import './@core/scss/core.scss'
 import './assets/scss/style.scss'
-
-// ** Service Worker
-import * as serviceWorker from './serviceWorker'
-
 // ** Lazy load app
 const LazyApp = lazy(() => import('./App'))
-
 ReactDOM.render(
-  <Provider store={store}>
-    <Suspense fallback={<Spinner />}>
-      <AbilityContext.Provider value={ability}>
+
+  <Provider store={ store }>
+    <Suspense fallback={ <Spinner /> }>
+      <AbilityContext.Provider value={ ability }>
         <ThemeContext>
           <IntlProviderWrapper>
             <LazyApp />
@@ -59,8 +55,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 )
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister()

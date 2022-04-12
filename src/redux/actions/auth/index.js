@@ -5,7 +5,7 @@ const config = useJwt.jwtConfig
 
 // ** Handle User Login
 export const handleLogin = data => {
-  return dispatch => {    
+  return dispatch => {
     dispatch({
       type: 'LOGIN',
       data,
@@ -16,8 +16,8 @@ export const handleLogin = data => {
 
     // ** Add to user, accessToken & refreshToken to localStorage
     localStorage.setItem('userData', JSON.stringify(data))
-    localStorage.setItem(config.storageTokenKeyName, JSON.stringify(data.accessToken))
-    localStorage.setItem(config.storageRefreshTokenKeyName, JSON.stringify(data.refreshToken))
+    localStorage.setItem(config.storageTokenKeyName, JSON.stringify(data.token))
+    localStorage.setItem(config.storageRefreshTokenKeyName, JSON.stringify(data.refresToken))
   }
 }
 

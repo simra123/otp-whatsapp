@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import Pagination from '@src/views/components/pagination/PaginationBasic'
 import { Card, CardTitle, CardBody, Table, Modal, ModalHeader, ModalBody, ModalFooter, UncontrolledDropdown, DropdownMenu, DropdownItem, DropdownToggle, Button } from 'reactstrap'
 import { Link } from 'react-router-dom'
 import { MoreVertical, Edit, Trash } from 'react-feather'
 import Action from '../../middleware/API'
 import baseURL from '../../middleware/BaseURL'
+
 //import toast types from components 
 import { SuccessToast, ErrorToast } from '../components/toastify'
 //import toasts from react
@@ -13,7 +14,6 @@ import { toast } from 'react-toastify'
 const ServiceTable = () => {
   //GET DATA
   const [allServices, setAllServices] = useState([])
-
   async function fetchServiceData() {
     const response = await Action.get('/Service', {})
     if (response.data.success === true) {
@@ -21,7 +21,6 @@ const ServiceTable = () => {
     }
   }
   const [modal, setModal] = useState(null)
-
 
   useEffect(async () => {
     fetchServiceData()

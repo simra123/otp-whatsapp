@@ -1,9 +1,20 @@
 // ** Third Party Components
 import { Card, CardBody, CardText, Row, Col, Table } from 'reactstrap'
 import Logo from '@src/assets/images/logo/logo2.png'
-
+let Subtotal = 0
+let total = 0
+const Discount = 20
 const PreviewCard = ({ data }) => {
-  { console.log(data) }
+
+  data.products.map((product, i) => {
+    total = 0
+    Subtotal += product.price * product.quantity
+    total += product.price * product.quantity
+    // data.products[i].totalQuantity = sum
+    data.products[i].total = total
+    //console.log("product index", index, "order index ", i, "product price", product.price, price)
+  })
+
   return data !== null ? (
     <Card className='invoice-preview-card'>
       <CardBody className='invoice-padding pb-0'>
@@ -17,11 +28,11 @@ const PreviewCard = ({ data }) => {
           <Col md="6" className="text-right justify-ite">
             <div className='mt-md-0 mt-2'>
               <h4 className='i'>
-                Invoice <span className='invoice-number'>#{ data._id }</span>
+                Invoice <span className='invoice-number'>#{ data?.invoiceid }</span>
               </h4>
               <div className='d-inline-flex'>
                 <p className='invoice-date-title'>Date Issued:</p>
-                <p className='ml-1 font-weight-bold'> data.invoice.issuedDate </p>
+                <p className='ml-1 font-weight-bold'> { data?.createdAt.slice(0, 10) }</p>
               </div>
               {  /* <div className='invoice-date-wrapper'>
               <p className='invoice-date-title'>Due Date:</p>
@@ -40,62 +51,15 @@ const PreviewCard = ({ data }) => {
           </Col>
           <Col md="4">
             <h6 className='mb-2'>Invoice To:</h6>
-            <h6 className='mb-25'> {data[0].name} </h6>
-            <CardText className='mb-25'> data.invoice.client.company </CardText>
-            <CardText className='mb-25'> data.invoice.client.address </CardText>
-            <CardText className='mb-25'> data.invoice.client.contact </CardText>
+            <h6 className='mb-25'> { data?.name } </h6>
+            <CardText className='mb-25'> { data?.email } </CardText>
+            <CardText className='mb-25'> { data?.address } </CardText>
+            <CardText className='mb-25'> { data?.mobile } </CardText>
           </Col>
         </Row>
 
         {/* /Header */ }
       </CardBody>
-
-      {/* <hr className='invoice-spacing' /> */ }
-
-      {/* Address and Contact */ }
-      {/* <CardBody className='invoice-padding pt-0'>
-        <Row className='invoice-spacing'>
-          <Col className='p-0' lg='8'>
-            <h6 className='mb-2'>Invoice To:</h6>
-            <h6 className='mb-25'>{data.invoice.client.name}</h6>
-            <CardText className='mb-25'>{data.invoice.client.company}</CardText>
-            <CardText className='mb-25'>{data.invoice.client.address}</CardText>
-            <CardText className='mb-25'>{data.invoice.client.contact}</CardText>
-            <CardText className='mb-0'>{data.invoice.client.companyEmail}</CardText>
-          </Col>
-          <Col className='p-0 mt-xl-0 mt-2' lg='4'>
-            <h6 className='mb-2'>Payment Details:</h6>
-            <table>
-              <tbody>
-                <tr>
-                  <td className='pr-1'>Total Due:</td>
-                  <td>
-                    <span className='font-weight-bolder'>{data.paymentDetails.totalDue}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td className='pr-1'>Bank name:</td>
-                  <td>{data.paymentDetails.bankName}</td>
-                </tr>
-                <tr>
-                  <td className='pr-1'>Country:</td>
-                  <td>{data.paymentDetails.country}</td>
-                </tr>
-                <tr>
-                  <td className='pr-1'>IBAN:</td>
-                  <td>{data.paymentDetails.iban}</td>
-                </tr>
-                <tr>
-                  <td className='pr-1'>SWIFT code:</td>
-                  <td>{data.paymentDetails.swiftCode}</td>
-                </tr>
-              </tbody>
-            </table>
-          </Col>
-        </Row>
-      </CardBody> */}
-      {/* /Address and Contact */ }
-
       {/* Invoice Description */ }
       <Table responsive>
         <thead>
@@ -108,46 +72,28 @@ const PreviewCard = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td className='py-1'>
-              {/* <p className='card-text font-weight-bold mb-25'>Native App Development</p>
-              <p className='card-text text-nowrap'>
-                Developed a full stack native app using React Native, Bootstrap & Python
-              </p> */}
-              1
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>4</span>
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>T-shirt</span>
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>5</span>
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>$450</span>
-            </td>
-          </tr>
-          <tr className='border-bottom'>
-            <td className='py-1'>
-              {/* <p className='card-text font-weight-bold mb-25'>Ui Kit Design</p>
-              <p className='card-text text-nowrap'>Designed a UI kit for native app using Sketch, Figma & Adobe XD</p> */}
-              2
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>Socks</span>
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>$20</span>
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>4</span>
-            </td>
-            <td className='py-1'>
-              <span className='font-weight-bold'>$128</span>
-            </td>
-          </tr>
+          { data.products.map((products, index) => {
+            return (
+              <tr>
+                <td className='py-1' key={ products.product }>
+
+                  { index + 1 }
+                </td>
+                <td className='py-1'>
+                  <span className='font-weight-bold'>{ products.product }</span>
+                </td>
+                <td className='py-1'>
+                  <span className='font-weight-bold'>{ products.price }</span>
+                </td>
+                <td className='py-1'>
+                  <span className='font-weight-bold'>{ products.quantity }</span>
+                </td>
+                <td className='py-1'>
+                  <span className='font-weight-bold'>${ products.quantity * products.price }</span>
+                </td>
+              </tr>
+            )
+          }) }
         </tbody>
       </Table>
       {/* /Invoice Description */ }
@@ -159,20 +105,20 @@ const PreviewCard = ({ data }) => {
             <div className='invoice-total-wrapper'>
               <div className='invoice-total-item'>
                 <p className='invoice-total-title'>Subtotal:</p>
-                <p className='invoice-total-amount'>$1800</p>
+                <p className='invoice-total-amount'>${ Subtotal }</p>
               </div>
               <div className='invoice-total-item'>
                 <p className='invoice-total-title'>Discount:</p>
-                <p className='invoice-total-amount'>$28</p>
+                <p className='invoice-total-amount'>${ Discount }</p>
               </div>
-              <div className='invoice-total-item'>
+              {/* <div className='invoice-total-item'>
                 <p className='invoice-total-title'>Tax:</p>
                 <p className='invoice-total-amount'>21%</p>
-              </div>
+              </div> */}
               <hr className='my-50' />
               <div className='invoice-total-item'>
                 <p className='invoice-total-title'>Total:</p>
-                <p className='invoice-total-amount'>$1690</p>
+                <p className='invoice-total-amount'>${ Subtotal - Discount }</p>
               </div>
             </div>
           </Col>

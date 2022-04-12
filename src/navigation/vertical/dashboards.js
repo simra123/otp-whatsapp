@@ -3,10 +3,10 @@ import { Home, Circle } from 'react-feather'
 export default [
   {
     id: 'dashboards',
-    title: 'Dashboards',
+    title: 'Dashboard',
     icon: <Home size={ 20 } />,
     badge: 'light-warning',
     badgeText: '',
-    navLink: '/dashboard/ecommerce'
+    navLink: '/dashboard'
   }
 ]

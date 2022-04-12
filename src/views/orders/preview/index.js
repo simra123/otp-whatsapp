@@ -20,24 +20,16 @@ const InvoicePreview = () => {
 
   // ** States
   const [data, setData] = useState(null)
-  const [sendSidebarOpen, setSendSidebarOpen] = useState(false)
-  const [addPaymentOpen, setAddPaymentOpen] = useState(false)
-
-  // ** Functions to toggle add & send sidebar
-  const toggleSendSidebar = () => setSendSidebarOpen(!sendSidebarOpen)
-  const toggleAddSidebar = () => setAddPaymentOpen(!addPaymentOpen)
-
 
   // ** Get invoice on mount based on id
   useEffect(() => {
     const getSingleOrder = async () => {
-      const { data } = await Action.get(`/order?id=${ id }`)
-      setData(data.data)
+      const { data } = await Action.get(`/order?_id=${ id }`)
+      setData(data.data[0])
       console.log(data.data)
     }
     getSingleOrder()
   }, [])
-
 
   return data !== null ? (
     <div className='invoice-preview-wrapper'>
@@ -48,12 +40,9 @@ const InvoicePreview = () => {
       </Row>
     </div>
   ) : (
-    <Alert color='danger'>
-      <h4 className='alert-heading'>Invoice not found</h4>
-      <div className='alert-body'>
-        Invoice with id: { id } doesn't exist. Check list of all invoices: <Link to='/invoice/list'>Invoice List</Link>
-      </div>
-    </Alert>
+    <div>
+      loading...
+    </div>
   )
 }
 

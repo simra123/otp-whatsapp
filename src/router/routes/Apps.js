@@ -491,7 +491,7 @@ const AppRoutes = [
     component: lazy(() => import('../../views/orders/preview')),
     exact: true,
     meta: {
-      navLink: '/orders/preview'
+      navLink: '/orders/preview/:id'
     }
   },
   {
