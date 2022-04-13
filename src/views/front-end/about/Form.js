@@ -47,7 +47,6 @@ const AboutForm = () => {
     text4: '',
     video: ''
   })
-  console.log(id)
   //text editor
   const [value, setValue] = useState(EditorState.createEmpty())
   const [loading, setLoading] = useState(false)
@@ -62,7 +61,6 @@ const AboutForm = () => {
     const fetchAboutData = async () => {
       try {
         const { data } = await Action.get('/about', {})
-        console.log(data)
         const res = data.data[0]
         setId(res._id)
 
@@ -112,7 +110,6 @@ const AboutForm = () => {
       }, 1000)
 
     } else {
-      console.log(res)
       setSuccess(false)
       toast.error(<ErrorToast title="error" text="Something went wrong, try again later" />)
     }

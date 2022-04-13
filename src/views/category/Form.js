@@ -75,7 +75,6 @@ const CategoryForm = () => {
     data.append('text', category.text)
     data.append('file', img)
     //post api
-    console.log(data)
     const postCategory = async (e) => {
         setSuccess(true)
 

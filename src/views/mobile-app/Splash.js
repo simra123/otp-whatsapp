@@ -105,8 +105,6 @@ const DesktopBanner = () => {
   const postBanner = async (e) => {
     e.preventDefault()
     const res = await Action.post(`/banner/splash`, uploadData, {})
-    console.log(res)
-    console.log(res)
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Banner Uploaded Successfully!" />)
       setModal3(null)
@@ -119,7 +117,6 @@ const DesktopBanner = () => {
   //delete banner 
   const deleteBanner = async (id) => {
     const res = await Action.delete(`/banner?id=${ id }`)
-    console.log(res)
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Banner Deleted Successfully!" />)
       setModal(null)
@@ -134,7 +131,6 @@ const DesktopBanner = () => {
 
   const updateBanner = async (id) => {
     const res = await Action.put(`/banner/${ id }`, editFile, {})
-    console.log(res)
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Banner Updated Successfully!" />)
       setModal2(null)

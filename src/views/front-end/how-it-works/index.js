@@ -65,7 +65,6 @@ const WorkList = () => {
         text: res.text
       })
       setIcon(res.icon)
-      console.log(res.icon)
 
     } catch (error) {
       console.log(error)
@@ -81,7 +80,6 @@ const WorkList = () => {
 
   const updateData = async (id) => {
     const res = await Action.put(`/work/${ id }`, newData, {})
-    console.log(res)
     if (res.data.success) {
       setLoading(true)
       toast.success(<SuccessToast title="Success" text="Section updated Successfully!" />)

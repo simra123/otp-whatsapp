@@ -58,7 +58,6 @@ const ServiceForm = () => {
   })
   //conveting the text from editor into plain html
   const paraToHtml = stateToHTML(para.getCurrentContent())
-  console.log(paraToHtml)
 
   //loading success 
   const [success, setSuccess] = useState(false)
@@ -71,7 +70,6 @@ const ServiceForm = () => {
   data.append('paragraph', paraToHtml)
   data.append('heading', sName)
   data.append('file', img)
-  console.log(data)
   //post api
   const postService = async (e) => {
     e.preventDefault()

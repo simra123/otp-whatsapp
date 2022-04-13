@@ -200,7 +200,6 @@ const ProductForm = () => {
     data.append('comments', paraToHtml)
     data.append('size', JSON.stringify(size))
     const response = await Action.post(`/product`, data, {})
-    console.log(response)
     if (response.data.success) {
       toast.success(<SuccessToast title="Success" text="Product added Successfully!" />)
       history.push('/product/list')

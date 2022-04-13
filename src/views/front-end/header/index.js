@@ -35,7 +35,6 @@ const Header = () => {
     const { data } = await Action.get("/topheader", {})
     if (data.success === true) {
       setTopHeader(data.data)
-      console.log(data.data)
       setBody({
         text: data.data[0].text,
         file: data.data[0].image,

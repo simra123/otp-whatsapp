@@ -40,10 +40,8 @@ const GeneralSettings = () => {
     androidUrl: '',
     iosUrl: ''
   })
-  console.log(generalData)
   const [header, setHeader] = useState(null)
   const [footer, setFooter] = useState(null)
-  console.log(header)
   const [id, setId] = useState(null)
 
   useEffect(() => {

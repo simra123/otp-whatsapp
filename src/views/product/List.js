@@ -21,7 +21,6 @@ const Banner = () => {
       try {
         const { data } = await Action.get(`/product`)
         setProducts(data.data)
-        console.log(data.data)
       } catch (error) {
         console.log(error)
       }

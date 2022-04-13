@@ -54,7 +54,6 @@ const FAQForm = () => {
       history.push('/faq/list')
 
     } else {
-      console.log(res)
       setSuccess(false)
       toast.error(<ErrorToast title="error" text={ res.data.msg } />)
     }

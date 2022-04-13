@@ -51,7 +51,6 @@ const EmployeeForm = () => {
     usertype: 2,
     password: ""
   })
-  console.log(Edetails)
 
   const uppy = new Uppy({
     meta: { type: 'avatar' },

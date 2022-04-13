@@ -53,7 +53,6 @@ const EcommerceDashboard = () => {
         const order = await Action.get(`/order`)
         const booking = await Action.get(`/booking`)
         const product = await Action.get(`/product`)
-        console.log(service.data.data.length)
         setData({
           services: service.data.data.length,
           orders: order.data.data.length,

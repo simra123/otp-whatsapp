@@ -30,7 +30,6 @@ const GeneralSettings = () => {
     mail_address: "",
     mail_name: ""
   })
-  console.log(smtp)
   useEffect(() => {
     //using promise 
     const getSmtp = async () => {
@@ -47,7 +46,6 @@ const GeneralSettings = () => {
           mail_name: res.mail_name
         })
         setId(res._id)
-        console.log(data.data[0])
       } catch (error) {
         console.log(error)
       }
@@ -63,7 +61,6 @@ const GeneralSettings = () => {
       }
     })
   }
-  console.log(id)
   //put api 
   const UpdateSmpt = async (e) => {
     e.preventDefault()

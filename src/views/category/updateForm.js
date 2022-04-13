@@ -103,7 +103,6 @@ const CategoryForm = () => {
       toast.success(<SuccessToast title="Success" text="Category updated Successfully!" />)
       history.push('/category/list')
     } else {
-      console.log(res.data.message)
       setSuccess(false)
       toast.error(<ErrorToast title="error" text={ res.data.message } />)
     }

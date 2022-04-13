@@ -32,7 +32,6 @@ const Colors = () => {
     const getColors = async () => {
       try {
         const { data } = await Action.get('/color')
-        console.log(data)
         setColors(data.data)
       } catch (error) {
         console.log(error)

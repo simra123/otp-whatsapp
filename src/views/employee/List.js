@@ -17,7 +17,6 @@ const EmployeeTable = () => {
   useEffect(() => {
     const getAllEmployee = async () => {
       const { data } = await Action.get('/auth/employee')
-      console.log(data.data)
       setAllEmployee(data.data)
     }
     getAllEmployee()

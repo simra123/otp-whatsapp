@@ -51,7 +51,6 @@ const Banner = () => {
   useEffect(() => {
     const getBanner = async () => {
       const res = await Action.get(`/banner/market`)
-      console.log(res)
 
       try {
         const data = res.data

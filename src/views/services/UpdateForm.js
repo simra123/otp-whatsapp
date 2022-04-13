@@ -39,7 +39,6 @@ const ServiceForm = () => {
     const { id } = useParams()
 
 
-    console.log(id)
     //  file Uploader
     const [img, setImg] = useState(null)
     //image preview
@@ -77,7 +76,6 @@ const ServiceForm = () => {
         setImg(file.data)
         setPreview(preview)
     })
-    console.log(img)
     //conveting the text from editor into plain html
     const paraToHtml = stateToHTML(value.getCurrentContent())
     //loading success 

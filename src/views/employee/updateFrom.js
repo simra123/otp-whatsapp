@@ -70,7 +70,6 @@ const EmployeeForm = () => {
         }
         getAllEmployee()
     }, [])
-    console.log(id)
     const uppy = new Uppy({
         meta: { type: 'avatar' },
         restrictions: { maxNumberOfFiles: 1 },

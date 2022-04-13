@@ -26,7 +26,6 @@ const InvoicePreview = () => {
     const getSingleOrder = async () => {
       const { data } = await Action.get(`/order?_id=${ id }`)
       setData(data.data[0])
-      console.log(data.data)
     }
     getSingleOrder()
   }, [])

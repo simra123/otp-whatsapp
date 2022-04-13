@@ -70,7 +70,6 @@ const orderTable = () => {
 
   }
 
-  console.log(filterOrders)
   //pagination algo
   const [currentPage, setCurrentPage] = useState(1)
   const [dataPerPage, setDataPerPage] = useState(5)

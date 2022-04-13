@@ -69,7 +69,6 @@ const AttributeNames = () => {
     try {
       const { data } = await Action.get(`/attribute?_id=${ id }`)
       const res = data.data[0]
-      console.log(res.attribute)
       setUpdateName(res.attribute)
     } catch (error) {
       console.log(error)

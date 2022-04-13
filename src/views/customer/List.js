@@ -15,7 +15,6 @@ const CustomerTable = () => {
   useEffect(() => {
     const getAllCustomers = async () => {
       const { data } = await Action.get('/auth/customer')
-      console.log(data.data)
       setAllCustomers(data.data)
     }
     getAllCustomers()

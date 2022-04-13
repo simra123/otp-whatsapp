@@ -22,7 +22,6 @@ const CategoryTable = () => {
       try {
         const { data } = await Action.get('/category')
         setAllCategories(data.data)
-        console.log(data)
       } catch (error) {
         console.log(error)
       }

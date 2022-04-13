@@ -91,7 +91,6 @@ const EmployeeForm = () => {
     }
     getData()
   }, [])
-  console.log(id)
   //onchange
   const eventChange = (e) => {
     const { name, value } = e.target

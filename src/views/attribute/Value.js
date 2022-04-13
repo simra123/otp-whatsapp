@@ -33,7 +33,6 @@ const ServiceForm = () => {
       try {
         const { data } = await Action.get('/attribute/value')
         setAttValues(data.data)
-        console.log(data.data)
       } catch (error) {
         console.log(error)
       }
