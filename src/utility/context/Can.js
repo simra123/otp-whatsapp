@@ -6,6 +6,6 @@ import { createContextualCan } from '@casl/react'
 
 // ** Create Context
 export const AbilityContext = createContext()
-
+export const EmailContext = createContext()
 // ** Init Can Context
 export const Can = createContextualCan(AbilityContext.Consumer)

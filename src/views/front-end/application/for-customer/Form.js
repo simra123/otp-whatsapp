@@ -118,13 +118,11 @@ const CustomerForm = () => {
   const updateData = async (e) => {
     e.preventDefault()
     const res = await Action.put(`/customer/${ id }`, newData)
+    setSuccess(true)
 
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Section updated Successfully!" />)
-      setSuccess(true)
-      setTimeout(() => {
-        history.push('/frontend/app/customer')
-      }, 1000)
+      history.push('/frontend/app/customer')
 
     } else {
       console.log(error)
@@ -237,7 +235,7 @@ const CustomerForm = () => {
                     <FaTextWidth size={ 15 } />
                   </InputGroupText>
                 </InputGroupAddon>
-                <Input type='text' name="heading4" value={ allData.heading4 } name="heading4" value={ allData.heading4 } onChange={ eventChange } id='icon-heading' placeholder='Enter your Heading' />
+                <Input type='text' name="heading4" value={ allData.heading4 } onChange={ eventChange } id='icon-heading' placeholder='Enter your Heading' />
               </InputGroup>
             </Col>
             <Col sm="12" md="6">

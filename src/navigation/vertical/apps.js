@@ -44,13 +44,13 @@ export default [
         title: 'All Services',
         icon: <Circle size={ 12 } />,
         navLink: '/services/list'
-      },
-      {
-        id: 'reviews',
-        title: 'Service Reviews',
-        icon: <Circle size={ 12 } />,
-        navLink: '/services/reviews'
       }
+      // {
+      //   id: 'reviews',
+      //   title: 'Service Reviews',
+      //   icon: <Circle size={ 12 } />,
+      //   navLink: '/services/reviews'
+      // }
 
     ]
   },
@@ -121,13 +121,13 @@ export default [
         title: 'Employee List',
         icon: <Circle size={ 12 } />,
         navLink: '/employee/list'
-      },
-      {
-        id: 'reviews-employee',
-        title: 'Employee Reviews',
-        icon: <Circle size={ 12 } />,
-        navLink: '/employee/reviews'
       }
+      // {
+      //   id: 'reviews-employee',
+      //   title: 'Employee Reviews',
+      //   icon: <Circle size={ 12 } />,
+      //   navLink: '/employee/reviews'
+      // }
       // {
       //   id: 'edit',
       //   title: 'Edit',

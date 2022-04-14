@@ -2,76 +2,37 @@ import * as yup from 'yup'
 import classnames from 'classnames'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Form, FormGroup, Row, Col, Button } from 'reactstrap'
-import InputPasswordToggle from '@components/input-password-toggle'
+import { Form, FormGroup, Row, Col, Button, Input, Spinner } from 'reactstrap'
 
-const PasswordTabContent = () => {
-  const SignupSchema = yup.object().shape({
-    'old-password': yup.string().required(),
-    'new-password': yup.string().required(),
-    'retype-new-password': yup
-      .string()
-      .required()
-      .oneOf([yup.ref(`new-password`), null], 'Passwords must match')
-  })
-
-  const { register, errors, handleSubmit, trigger } = useForm({
-    resolver: yupResolver(SignupSchema)
-  })
-
-  const onSubmit = () => trigger()
+const PasswordTabContent = ({ passwords, setPasswords, handleSubmit, loading }) => {
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form onSubmit={ (e) => handleSubmit(e) }>
       <Row>
         <Col sm='12'>
           <FormGroup>
-            <InputPasswordToggle
-              label='Current Password'
-              htmlFor='old-password'
-              name='old-password'
-              innerRef={register({ required: true })}
-              className={classnames('input-group-merge', {
-                'is-invalid': errors['old-password']
-              })}
-            />
+            <Input type='password' placeholder='********' autoFocus />
+
           </FormGroup>
         </Col>
       </Row>
       <Row>
         <Col sm='6'>
           <FormGroup>
-            <InputPasswordToggle
-              label='New Password'
-              htmlFor='new-password'
-              name='new-password'
-              innerRef={register({ required: true })}
-              className={classnames('input-group-merge', {
-                'is-invalid': errors['new-password']
-              })}
-            />
+            <Input type='password' placeholder='********' value={ passwords.newPassword } autoFocus onChange={ (e) => setPasswords({ ...passwords, newPassword: e.target.value }) } />
           </FormGroup>
         </Col>
         <Col sm='6'>
           <FormGroup>
-            <InputPasswordToggle
-              label='Confirm Password'
-              htmlFor='retype-new-password'
-              name='retype-new-password'
-              innerRef={register({ required: true })}
-              className={classnames('input-group-merge', {
-                'is-invalid': errors['retype-new-password']
-              })}
-            />
+            <Input type='password' placeholder='********' value={ passwords.confirmPassword } autoFocus onChange={ (e) => setPasswords({ ...passwords, confirmPassword: e.target.value }) } />
           </FormGroup>
         </Col>
         <Col className='mt-1' sm='12'>
           <Button.Ripple type='submit' className='mr-1' color='primary'>
             Save changes
+            { loading ? <Spinner color='light' size="sm" className="mx-1" /> : null }
           </Button.Ripple>
-          <Button.Ripple color='secondary' outline>
-            Cancel
-          </Button.Ripple>
+
         </Col>
       </Row>
     </Form>

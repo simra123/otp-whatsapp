@@ -101,13 +101,11 @@ const AboutForm = () => {
 
   const updateAbout = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const res = await Action.put(`/about/${ id }`, updatedData, {})
     if (res.data.success) {
       toast.success(<SuccessToast title="Success" text="Section updated Successfully!" />)
-      setLoading(true)
-      setTimeout(() => {
-        history.push('/frontend/about')
-      }, 1000)
+      history.push('/frontend/about')
 
     } else {
       setSuccess(false)
@@ -132,7 +130,7 @@ const AboutForm = () => {
             <Col md="6" sm='12'>
               <FormGroup >
                 <Label for='icon'>Upload Icon</Label>
-                <CustomInput onChange={ (e) => setIcon1(e.target.files[0]) } name="icon1" type='file' id='icon' name='customFile' />
+                <CustomInput onChange={ (e) => setIcon1(e.target.files[0]) } name="icon1" type='file' id='icon' />
               </FormGroup>
 
             </Col>

@@ -8,16 +8,15 @@ import { handleLogin } from '@store/actions/auth'
 import { AbilityContext } from '@src/utility/context/Can'
 import { Link, useHistory } from 'react-router-dom'
 import InputPasswordToggle from '@components/input-password-toggle'
-import { getHomeRouteForLoggedInUser, isObjEmpty } from '@utils'
-import { Facebook, Twitter, Mail, GitHub, HelpCircle, Coffee } from 'react-feather'
+import { getHomeRouteForLoggedInUser } from '@utils'
+import { Coffee } from 'react-feather'
 import Logo from '../../../../src/assets/images/logo/logo2.png'
-import LoginBg from '@src/assets/images/backgrounds/Marketing.png'
+import LoginBg from '@src/assets/images/register.jpg'
+
 import {
-  Alert,
   Row,
   Col,
   CardTitle,
-  CardText,
   Form,
   Input,
   FormGroup,
@@ -89,12 +88,12 @@ const Login = () => {
   return (
     <div className='auth-wrapper auth-v2'>
       <Row className='auth-inner m-0'>
-        {/* <Link className='brand-logo lg:hidden' to='/' onClick={e => e.preventDefault()}>
-      <img src={Logo} width="100" height="120" alt=""/>
-    </Link> */}
+        <Link className='brand-logo lg:hidden' to='/' onClick={ e => e.preventDefault() }>
+          <img src={ Logo } width="200" height="auto" alt="" />
+        </Link>
         <Col className='d-none d-lg-flex align-items-center p-5' lg='8' sm='12'>
           <div className='w-100 d-lg-flex align-items-center justify-content-center px-5'>
-            <img className='img-fluid' src={ Logo } alt='Login' width="400" height="400" />
+            <img className='img-fluid' src={ LoginBg } alt='Login' width="auto" height="500" />
           </div>
         </Col>
         <Col className='d-flex align-items-center auth-bg px-2 p-lg-5' lg='4' sm='12'>

@@ -33,11 +33,7 @@ const PagesRoutes = [
   //   component: lazy(() => import('../../views/pages/authentication/RegisterV1')),
   //   layout: 'BlankLayout'
   // },
-  {
-    path: '/pages/register-v2',
-    component: lazy(() => import('../../views/pages/authentication/RegisterV2')),
-    layout: 'BlankLayout'
-  },
+
   {
     path: '/forgot-password',
     component: lazy(() => import('../../views/pages/authentication/ForgotPasswordV2')),
@@ -49,8 +45,12 @@ const PagesRoutes = [
   {
     path: '/otp',
     component: lazy(() => import('../../views/pages/authentication/Otp')),
-    layout: 'BlankLayout'
+    layout: 'BlankLayout',
+    meta: {
+      authRoute: true
+    }
   },
+
   {
     path: '/pages/forgot-password-v2',
     component: lazy(() => import('../../views/pages/authentication/ForgotPasswordV2.js')),
@@ -59,7 +59,10 @@ const PagesRoutes = [
   {
     path: '/reset-password',
     component: lazy(() => import('../../views/pages/authentication/ResetPassword')),
-    layout: 'BlankLayout'
+    layout: 'BlankLayout',
+    meta: {
+      authRoute: true
+    }
   }
   // {
   //   path: '/pages/reset-password-v2',

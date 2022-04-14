@@ -5,16 +5,10 @@ import { Fragment } from 'react'
 import { Row, Col } from 'reactstrap'
 
 // ** Custom Components
-import Breadcrumbs from '@components/breadcrumbs'
 
 // ** Maps
-import MapBasic from './MapsBasic'
 import MapEvents from './MapEvents'
-import MapTooltip from './MapTooltip'
-import MapMarkerList from './MapMarkerList'
-import MapCustomIcon from './MapCustomIcon'
-import MapLayerControl from './MapLayerControl'
-import MapDrggableMarker from './MapDraggableMarker'
+
 
 // ** Styles
 import '@styles/react/libs/maps/map-leaflet.scss'
