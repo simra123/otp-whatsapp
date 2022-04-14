@@ -282,12 +282,8 @@ const ProductForm = (props) => {
                         </Col>
                     </Row>
 
-                    <h4 className="py-2">Product Images</h4>
-
-                    <Row className="mb-2">
-                        <Col sm="12" className="mt-1">
-                            {/* basic image upload */ }
-
+                    {/* <h4 className="py-2">Product Images</h4>
+               
                             <h6>Gallery Images (600x600)</h6>
                             <small className="pb-2">
                                 These images are visible in product details page gallery. Use
@@ -310,7 +306,7 @@ const ProductForm = (props) => {
                                 </Card>
                             </div>
                         </Col>
-                    </Row>
+                    </Row> */}
 
                     <Row>
 
