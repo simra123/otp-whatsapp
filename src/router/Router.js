@@ -89,7 +89,7 @@ const Router = () => {
       return <Redirect to='/login' />
     } else if (route.meta && route.meta.authRoute && isUserLoggedIn()) {
       // ** If route has meta and authRole and user is Logged in then redirect user to home page (DefaultRoute)
-      return <Redirect to='/' />
+      return <Redirect to='/dashboard' />
     } else if (isUserLoggedIn() && !ability.can(action || 'read', resource)) {
       console.log(ability)
       console.log(isUserLoggedIn())
@@ -209,7 +209,7 @@ const Router = () => {
         { ResolveRoutes() }
 
         {/* NotFound Error page */ }
-        <Route path='*' component={ Error } />
+        <Route component={ Error } />
       </Switch>
     </AppRouter>
   )
