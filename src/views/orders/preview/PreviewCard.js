@@ -66,9 +66,12 @@ const PreviewCard = ({ data }) => {
           <tr>
             <th className='py-1'>#</th>
             <th className='py-1'>Item</th>
+            <th className='py-1'>Color</th>
+            <th className='py-1'>Size</th>
+            <th className='py-1'>Quatity</th>
             <th className='py-1'>Price</th>
-            <th className='py-1'>Qty</th>
             <th className='py-1'>Total</th>
+
           </tr>
         </thead>
         <tbody>
@@ -80,7 +83,13 @@ const PreviewCard = ({ data }) => {
                   { index + 1 }
                 </td>
                 <td className='py-1'>
-                  <span className='font-weight-bold'>{ products.product }</span>
+                  <span className='font-weight-bold'>{ products.name }</span>
+                </td>
+                <td className='py-1'>
+                  <span className='font-weight-bold'>{ products.color.map((color) => { return (`${ color }, `) }) }</span>
+                </td>
+                <td className='py-1'>
+                  <span className='font-weight-bold'>{ products.size.map((size) => { return (`${ size }, `) }) }</span>
                 </td>
                 <td className='py-1'>
                   <span className='font-weight-bold'>{ products.price }</span>

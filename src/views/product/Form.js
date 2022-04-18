@@ -103,8 +103,8 @@ const ProductForm = () => {
     const response = await Action.get("/category", {})
     if (response.data.success === true) {
       response.data.data.map((item, index) => {
-        response.data.data[index].value = item.text
-        response.data.data[index].label = item.text
+        response.data.data[index].value = item.heading
+        response.data.data[index].label = item.heading
       })
       setcategory(response.data.data)
     } else {

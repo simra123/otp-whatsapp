@@ -48,7 +48,7 @@ const Banner = () => {
     }
   }
   const [currentPage, setCurrentPage] = useState(1)
-  const [dataPerPage, setDataPerPage] = useState(3)
+  const [dataPerPage, setDataPerPage] = useState(5)
   //setting pages into the pagination
   const indexOfLastPage = currentPage * dataPerPage//5
   const indexOfFirstPage = indexOfLastPage - dataPerPage //0
